@@ -1,0 +1,17 @@
+//adapt value function
+$maxWidth: 1920;
+
+@function adaptValue($pcSize, $mbSize) {
+	$addSize: $pcSize - $mbSize;
+	$maxWidth: $maxWidth - 390;
+	@return calc(#{$mbSize + px} + #{$addSize} * ((100vw - 390px) / #{$maxWidth}));
+}
+
+//color vars
+$primaryBgColor: rgb(46, 47, 49);
+$primaryBgColorHover: rgb(57, 58, 60);
+$primaryTextColor: whitesmoke;
+$semiTransparentBgColor: rgb(0, 0, 0, 0.5);
+
+//get UI element params
+$borderRadius: 10px;
