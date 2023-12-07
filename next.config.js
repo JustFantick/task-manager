@@ -6,5 +6,6 @@ module.exports = nextConfig
 module.exports = {
 	sassOptions: {
 		includePaths: [path.join(__dirname, 'styles')],
+		prependData: `@import "@/app/variables.scss";`
 	},
 }
