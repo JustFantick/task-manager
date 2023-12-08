@@ -1,0 +1,39 @@
+.signInUpContainer {
+	background-color: $semiTransparentBgColor;
+	border-radius: $borderRadius;
+	overflow-y: auto;
+
+	padding: adaptValue(70, 50) adaptValue(60, 40);
+
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+
+	@media (max-width: 426px) {
+		width: 100%;
+		height: 100%;
+		height: 100dvh;
+		border-radius: 0;
+
+		display: flex;
+		justify-content: center;
+	}
+}
+
+.tabsContainer {
+	display: flex;
+	justify-content: space-around;
+}
+
+.formContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.horizontalLine {
+	width: 100%;
+	height: 3px;
+	border-radius: 5px;
+	background-color: $primaryTextColor;
+}

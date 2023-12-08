@@ -1,0 +1,13 @@
+.tabButton {
+	cursor: pointer;
+	font-size: adaptValue(40, 26);
+	transition: color 0.3s ease-in-out;
+
+	&[data-isactive=true] {
+		color: $primaryTextColor;
+	}
+
+	&[data-isactive=false] {
+		color: rgb(92, 94, 101);
+	}
+}
