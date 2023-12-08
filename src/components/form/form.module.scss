@@ -1,0 +1,78 @@
+$textMarginLeft: 15px;
+$labelTextSize: adaptValue(20, 16);
+
+.inputWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	&__label {
+		margin-left: $textMarginLeft;
+
+		font-weight: 400;
+		font-size: $labelTextSize;
+		line-height: 1.22;
+		color: $primaryTextColor;
+	}
+
+	&__input {
+		width: 100%;
+		background: $primaryBgColor;
+		border-radius: $borderRadius;
+		padding: 18px 25px;
+
+		border-color: transparent;
+		transition: all 0.3s ease-in-out;
+
+		font-weight: 400;
+		font-size: adaptValue(28, 18);
+		line-height: 1.25;
+
+		color: $primaryTextColor;
+
+		&::placeholder {
+			color: rgba(255, 255, 255, 0.5);
+		}
+	}
+}
+
+.inputCheckbox {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	margin-left: $textMarginLeft;
+
+	font-weight: 400;
+	font-size: $labelTextSize;
+	line-height: 1.22;
+	color: $primaryTextColor;
+
+	& input {
+		$boxSize: $labelTextSize;
+		height: $boxSize;
+		width: $boxSize;
+	}
+}
+
+.submitButton {
+	cursor: pointer;
+	padding: 15px adaptValue(25, 18);
+	background: #D9D9D9;
+	border-radius: 10px;
+
+	border-color: transparent;
+
+	font-weight: 700;
+	font-size: adaptValue(25, 18);
+	line-height: 1.24;
+
+	color: #000000;
+}
+
+.forgotPassword {
+	margin-left: $textMarginLeft;
+	text-decoration: underline;
+	color: $primaryTextColor;
+	font-size: $labelTextSize;
+}
