@@ -37,7 +37,7 @@ const SignInUp = () => {
 
 			<div className={styles.horizontalLine}></div>
 
-			<div style={{ overflowX: 'hidden' }}>
+			<div>
 				<AnimatePresence mode='wait'>
 					<motion.div
 						key={activeTabIndex}
