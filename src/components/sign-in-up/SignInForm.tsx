@@ -36,7 +36,7 @@ const SignInForm = () => {
 
 			<ForgotPassword />
 
-			<SubmitButton text='Authorize' onSubmit={() => console.log('submit')} />
+			<SubmitButton title='Authorize' />
 		</form>
 	)
 }

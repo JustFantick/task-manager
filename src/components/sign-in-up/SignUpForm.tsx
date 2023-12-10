@@ -42,7 +42,7 @@ const SignUpForm = () => {
 				setValue={setRememberUser}
 			/>
 
-			<SubmitButton text='Register' onSubmit={() => console.log('submit')} />
+			<SubmitButton title='Register' />
 
 		</form>
 	)

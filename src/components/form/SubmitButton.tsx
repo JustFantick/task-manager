@@ -3,12 +3,7 @@ import styles from './form.module.scss'
 import { motion, spring } from 'framer-motion'
 import { useFormStatus } from 'react-dom';
 
-interface SubmitButtonProps {
-	onSubmit: React.FormEventHandler,
-	text: string,
-}
-
-const SubmitButton = ({ onSubmit, text }: SubmitButtonProps) => {
+const SubmitButton = ({ title }: {title: string}) => {
 	const { pending } = useFormStatus();
 
 	return (
@@ -21,9 +16,8 @@ const SubmitButton = ({ onSubmit, text }: SubmitButtonProps) => {
 			animate={pending && 'disabled'}
 
 			className={styles.submitButton}
-			onSubmit={onSubmit}
 		>
-			{text}
+			{title}
 		</motion.button>
 	)
 }
