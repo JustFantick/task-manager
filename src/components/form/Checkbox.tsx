@@ -3,20 +3,19 @@ import styles from './form.module.scss'
 
 interface CheckboxProps {
 	label: string,
-	value: boolean,
-	setValue: Function,
+	name: string,
+	defaultChecked?: boolean,
 }
 
-const Checkbox = ({ label, value, setValue }: CheckboxProps) => {
+const Checkbox = ({ label, name, defaultChecked = true }: CheckboxProps) => {
 	return (
 		<label className={styles.inputCheckbox}>
 			{label}
 
 			<input
 				type="checkbox"
-				name={label}
-				checked={value}
-				onChange={(e) => setValue(e.target.checked)}
+				name={name}
+				defaultChecked={defaultChecked}
 			/>
 
 		</label>

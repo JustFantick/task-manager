@@ -3,13 +3,17 @@ import styles from './form.module.scss'
 
 interface InputProps {
 	type: string,
-	label: string,
-	isValid: boolean,
-	value: string,
-	setValue: Function,
+	label?: string,
+	name: string,
+	pattern?: string,
+	title?: string,
+	isRequired?: boolean,
+	placeholder?: string,
 }
 
-const Input = ({ type, label, isValid, value, setValue }: InputProps) => {
+const Input = ({
+	label = '', type, name, pattern, title = '', isRequired = true, placeholder = ''
+}: InputProps) => {
 	return (
 		<label className={styles.inputWrapper}>
 			<div className={styles.inputWrapper__label}>
@@ -18,9 +22,11 @@ const Input = ({ type, label, isValid, value, setValue }: InputProps) => {
 
 			<input className={styles.inputWrapper__input}
 				type={type}
-				name={type}
-				value={value}
-				onChange={(e) => setValue(e.target.value)}
+				name={name}
+				pattern={pattern}
+				title={title}
+				required={isRequired}
+				placeholder={placeholder}
 			/>
 
 		</label>
