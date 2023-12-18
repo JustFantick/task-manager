@@ -3,6 +3,7 @@
 		"public",
 		"vscode",
 		"components",
-		"app"
+		"app",
+		"db"
 	]
 }
