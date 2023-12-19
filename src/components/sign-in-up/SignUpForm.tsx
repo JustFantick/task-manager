@@ -3,10 +3,17 @@ import styles from './SignInUp.module.scss'
 import Input from '../form/Input'
 import Checkbox from '../form/Checkbox'
 import SubmitButton from '../form/SubmitButton'
+import { signUp } from '@/server-actions/form-actions'
 
 const SignUpForm = () => {
 	return (
-		<form className={styles.formContainer}>
+		<form action={async (formData) => {
+			const res = await signUp(formData);
+
+			if (res.success === true) {
+				//redirect to user page
+			}
+		}} className={styles.formContainer}>
 			<Input
 				type='text'
 				label='Login'

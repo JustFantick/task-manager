@@ -4,10 +4,19 @@ import Input from '../form/Input'
 import Checkbox from '../form/Checkbox'
 import ForgotPassword from '../form/ForgotPassword'
 import SubmitButton from '../form/SubmitButton'
+import { signIn } from '@/server-actions/form-actions'
 
 const SignInForm = () => {
 	return (
-		<form className={styles.formContainer}>
+		<form action={async (formData) => {
+			const res = await signIn(formData);
+
+			if (res.success === true) {
+				//redirect to user page
+			}
+		}}
+			className={styles.formContainer}
+		>
 			<Input
 				type='text'
 				label='Login'
@@ -29,6 +38,7 @@ const SignInForm = () => {
 			<ForgotPassword />
 
 			<SubmitButton title='Authorize' />
+
 		</form>
 	)
 }
