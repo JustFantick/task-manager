@@ -4,6 +4,7 @@
 		"vscode",
 		"components",
 		"app",
-		"db"
+		"db",
+		"server-actions"
 	]
 }
