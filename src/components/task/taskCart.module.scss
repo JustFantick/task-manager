@@ -1,0 +1,61 @@
+.taskContainer {
+	cursor: pointer;
+	padding: adaptValue(12, 8) adaptValue(23, 13);
+	border-radius: $borderRadius;
+
+	background-color: $primaryBgColor;
+	transition: background-color 0.3s ease-in-out;
+
+	&:hover {
+		background-color: $primaryBgColorHover;
+	}
+
+	display: flex;
+	align-items: center;
+	gap: adaptValue(17, 10);
+
+	&__title {
+		flex: 1 1 auto;
+		font-size: adaptValue(22, 17);
+	}
+}
+
+.status {
+	cursor: pointer;
+	background-color: rgba(0, 0, 0, 0.15);
+	border: 2px solid white;
+	border-radius: 50%;
+
+	position: relative;
+
+	&__checkmark {
+		color: $primaryTextColor;
+		position: absolute;
+		top: -3%;
+		left: 7%;
+	}
+}
+
+.star {
+	$size: adaptValue(30, 25);
+	height: $size;
+	width: $size;
+
+	path {
+		transition: all 0.2s ease-in-out;
+	}
+
+	&[data-isprioritized=false] {
+		path {
+			fill: $primaryBgColor;
+			stroke: #9696E6;
+		}
+	}
+
+	&[data-isprioritized=true] {
+		path {
+			fill: #9696E6;
+			stroke: #9696E6;
+		}
+	}
+}
