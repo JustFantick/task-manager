@@ -1,0 +1,46 @@
+$paddingVertical: adaptValue(20, 14);
+$paddingRight: adaptValue(64, 40);
+$paddingGap: adaptValue(10, 7);
+
+.addTask {
+	width: 100%;
+
+
+	&__label {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		background-color: $semiTransparentBgColor;
+		border-radius: $borderRadius;
+		overflow: hidden;
+
+
+		input {
+			flex: 1 1 auto;
+			background-color: transparent;
+			padding: $paddingVertical $paddingRight $paddingVertical $paddingGap;
+
+			border: none;
+			outline: none;
+
+			&:focus {
+				border: none;
+				outline: none;
+			}
+		}
+	}
+}
+
+.plusContainer {
+	padding: 0 $paddingGap;
+}
+
+.plusIcon {
+	$plusSize: adaptValue(35, 30);
+	height: $plusSize;
+	width: $plusSize;
+
+	& path {
+		stroke: white;
+	}
+}
