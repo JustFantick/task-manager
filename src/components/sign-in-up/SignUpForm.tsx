@@ -4,14 +4,18 @@ import Input from '../form/Input'
 import Checkbox from '../form/Checkbox'
 import SubmitButton from '../form/SubmitButton'
 import { signUp } from '@/server-actions/form-actions'
+import { useRouter } from 'next/navigation'
 
 const SignUpForm = () => {
+	const router = useRouter();
+
 	return (
 		<form action={async (formData) => {
 			const res = await signUp(formData);
 
 			if (res.success === true) {
 				//redirect to user page
+				router.push(`/profiles/${res.userId}`);
 			}
 		}} className={styles.formContainer}>
 			<Input

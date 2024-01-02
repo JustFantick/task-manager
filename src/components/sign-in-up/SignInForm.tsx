@@ -5,14 +5,18 @@ import Checkbox from '../form/Checkbox'
 import ForgotPassword from '../form/ForgotPassword'
 import SubmitButton from '../form/SubmitButton'
 import { signIn } from '@/server-actions/form-actions'
+import { useRouter } from 'next/navigation'
 
 const SignInForm = () => {
+	const router = useRouter();
+
 	return (
 		<form action={async (formData) => {
 			const res = await signIn(formData);
 
 			if (res.success === true) {
 				//redirect to user page
+				router.push(`./profiles/${res.userId}`);
 			}
 		}}
 			className={styles.formContainer}
