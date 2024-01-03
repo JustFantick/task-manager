@@ -10,9 +10,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
-  user_id Int @id @default(autoincrement())
-  login String
+model Users {
+  userId   Int    @id @default(autoincrement())
+  login    String
   password String
-  email String
+  email    String
+
+  tasks Tasks[]
+}
+
+model Tasks {
+  taskId   Int    @id @default(autoincrement())
+  taskName String
+
+  userId Int   @unique
+  user   Users @relation(fields: [userId], references: [userId])
+
+  isCompleted Boolean   @default(false)
+  note        String?
+  priority    Boolean   @default(false)
+  editTime    DateTime @updatedAt
+  executeDate DateTime?
+
+  listId Int   @unique
+  lists  Lists @relation(fields: [listId], references: [listId])
+
+  Steps Steps[]
+}
+
+model Lists {
+  listId   Int     @id @default(autoincrement())
+  listName String
+  tasks    Tasks[]
+}
+
+model Steps {
+  stepId      Int     @id @default(autoincrement())
+  stepName    String
+  isCompleted Boolean @default(false)
+
+  taskId Int   @unique
+  tasks  Tasks @relation(fields: [taskId], references: [taskId])
 }
