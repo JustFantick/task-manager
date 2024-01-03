@@ -1,0 +1,21 @@
+.createList {
+	padding: 10px 15px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+
+	&__icon {
+		$plusSize: adaptValue(30, 20);
+		height: $plusSize;
+		width: $plusSize;
+	}
+
+	&__input {
+		max-width: 190px;
+		background-color: $primaryBgColor;
+		border: none;
+		outline: none;
+		font-size: adaptValue(18, 16);
+	}
+}

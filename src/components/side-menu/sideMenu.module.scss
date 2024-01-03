@@ -1,0 +1,55 @@
+.sideMenu {
+	max-width: 290px;
+	border-top-right-radius: $borderRadius;
+	border-bottom-right-radius: $borderRadius;
+	background-color: $primaryBgColor;
+
+	&__body {
+		padding: 30px 15px;
+		min-height: 100dvh;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+}
+
+.sideMenuHeader {
+	&__row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 5px;
+
+		h2 {
+			text-transform: capitalize;
+		}
+	}
+
+	p {
+		margin-top: 10px;
+	}
+}
+
+.logOutIcon {
+	$iconSize: 20px;
+	height: $iconSize;
+	width: $iconSize;
+
+	cursor: pointer;
+}
+
+.sideMenuBasicLists {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.sideMenuCustomLists {
+	flex: 1 1 auto;
+}
+
+.sideMenuFooter {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}

@@ -1,0 +1,40 @@
+.tasksListCard {
+	border-radius: $borderRadius;
+	overflow: hidden;
+	padding: 10px 15px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+
+	&__name {
+		font-size: 16px;
+		color: white;
+		line-height: 1;
+	}
+
+	&__counter {
+		$counterSize: 16px;
+
+		font-size: 10px;
+		line-height: $counterSize;
+		color: black;
+
+		position: relative;
+		z-index: 1;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			z-index: -1;
+			transform: translate(-50%, -50%);
+			height: $counterSize;
+			width: $counterSize;
+			background-color: #d9d9d9;
+			border-radius: 50%;
+		}
+	}
+}
