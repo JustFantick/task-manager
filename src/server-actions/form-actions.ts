@@ -29,7 +29,7 @@ export async function signIn(formData: FormData) {
 			return {
 				success: true,
 				message: 'Authorization successful',
-				userId: userDbData.user_id,
+				userId: userDbData.userId,
 			}
 		}
 
@@ -72,7 +72,7 @@ export async function signUp(formData: FormData) {
 		return {
 			success: true,
 			message: 'Registered successfully',
-			userId: createdUser.user_id,
+			userId: createdUser.userId,
 		}
 
 	} catch (error) {

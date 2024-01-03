@@ -8,10 +8,10 @@ interface ProfilePageProps {
 }
 
 const PrifilePage = async ({ params }: ProfilePageProps) => {
-	
+
 	const profileData = await prisma.users.findFirst({
 		where: {
-			user_id: parseInt(params.profileId),
+			userId: parseInt(params.profileId),
 		}
 	});
 
@@ -22,7 +22,7 @@ const PrifilePage = async ({ params }: ProfilePageProps) => {
 			<h1>Profile page</h1>
 
 			<ul>
-				<li>user id: {profileData?.user_id}</li>
+				<li>user id: {profileData?.userId}</li>
 				<li>login: {profileData?.login}</li>
 				<li>email: {profileData?.email}</li>
 				<li>password: {profileData?.password}</li>
