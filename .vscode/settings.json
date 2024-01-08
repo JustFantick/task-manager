@@ -5,6 +5,7 @@
 		"components",
 		"app",
 		"db",
-		"server-actions"
+		"server-actions",
+		"store"
 	]
 }
