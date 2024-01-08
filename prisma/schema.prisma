@@ -17,6 +17,7 @@ model Users {
   email    String
 
   tasks Tasks[]
+  lists Lists[]
 }
 
 model Tasks {
@@ -29,11 +30,11 @@ model Tasks {
   isCompleted Boolean   @default(false)
   note        String?
   priority    Boolean   @default(false)
-  editTime    DateTime @updatedAt
+  editTime    DateTime  @updatedAt
   executeDate DateTime?
 
-  listId Int   @unique
-  lists  Lists @relation(fields: [listId], references: [listId])
+  listId Int?   @unique
+  lists  Lists? @relation(fields: [listId], references: [listId])
 
   Steps Steps[]
 }
@@ -42,6 +43,9 @@ model Lists {
   listId   Int     @id @default(autoincrement())
   listName String
   tasks    Tasks[]
+
+  userId Int   @unique
+  user   Users @relation(fields: [userId], references: [userId])
 }
 
 model Steps {
