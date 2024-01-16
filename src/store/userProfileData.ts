@@ -1,12 +1,12 @@
 import { create } from 'zustand'
 
-interface UserData {
+export interface UserData {
 	userId: number,
 	login: string,
 	email: string,
 }
 
-interface Task {
+export interface Task {
 	taskId: number,
 	name: string,
 	note: string | null,
@@ -17,7 +17,7 @@ interface Task {
 	listId: number | null,
 }
 
-interface List {
+export interface List {
 	listId: number,
 	name: string,
 }
