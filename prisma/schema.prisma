@@ -33,7 +33,7 @@ model Tasks {
   editTime    DateTime  @updatedAt
   executeDate DateTime?
 
-  listId Int?   @unique
+  listId Int?
   lists  Lists? @relation(fields: [listId], references: [listId])
 
   Steps Steps[]
@@ -44,7 +44,7 @@ model Lists {
   listName String
   tasks    Tasks[]
 
-  userId Int   @unique
+  userId Int
   user   Users @relation(fields: [userId], references: [userId])
 }
 
