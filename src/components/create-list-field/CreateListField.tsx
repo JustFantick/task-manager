@@ -3,14 +3,13 @@ import styles from './createListField.module.scss'
 import PlusIcon from '../../../public/plus.svg'
 import { motion } from 'framer-motion'
 
-const CreateListField = () => {
+const CreateListField = ({ createList }: { createList: Function }) => {
 	const [isFocused, setIsFocused] = useState<boolean>(false);
 	const [inputValue, setInputValue] = useState<string>('');
 
 	function onKeyDownHandler(e: React.KeyboardEvent) {
 		if (e.key === 'Enter' && inputValue !== '') {
-			//implement server action
-
+			createList(inputValue);
 			setInputValue('');
 		}
 	}
