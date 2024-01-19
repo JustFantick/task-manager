@@ -1,6 +1,7 @@
 import React from 'react'
 import prisma from '../../../../lib/prisma'
-import { useProfileDataStore } from '@/store/userProfileData';
+import SideMenu from '@/components/side-menu/SideMenu';
+import StoreInitializer from '@/components/store-initializer/StoreInitializer';
 
 interface ProfilePageProps {
 	params: { profileId: string },
@@ -26,31 +27,30 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
 	});
 
 	if (profileData !== null) {
-		useProfileDataStore.setState({
-			userData: {
-				userId: profileData?.userId,
-				login: profileData?.login,
-				email: profileData?.email
-			},
-			userTasks: tasksToStore,
-			filteredTasks: tasksToStore,
-			userLists: profileLists.map(list => {
-				return {
-					listId: list.listId,
-					name: list.listName,
-				}
-			}),
-		});
-
 		return (
-			<div>
-				<h2>Profile page</h2>
-				<p>
-					{JSON.stringify(useProfileDataStore.getState().userTasks)}
-				</p>
+			<StoreInitializer
+				userData={{
+					userId: profileData.userId,
+					login: profileData.login,
+					email: profileData.email
+				}}
+				userTasks={tasksToStore}
+				filteredTasks={tasksToStore}
+				userLists={
+					profileLists.map(list => {
+						return {
+							listId: list.listId,
+							name: list.listName,
+							isActive: false
+						}
+					})
+				}
+			>
+				<SideMenu />
 
-			</div>
+			</StoreInitializer>
 		)
+
 	} else return (
 		<div style={{
 			height: '100%',
