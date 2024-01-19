@@ -38,7 +38,8 @@
 	cursor: pointer;
 }
 
-.sideMenuBasicLists {
+.sideMenuBasicLists,
+.sideMenuCustomLists {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
