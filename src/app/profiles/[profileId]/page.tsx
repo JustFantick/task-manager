@@ -2,6 +2,7 @@ import React from 'react'
 import prisma from '../../../../lib/prisma'
 import SideMenu from '@/components/side-menu/SideMenu';
 import StoreInitializer from '@/components/store-initializer/StoreInitializer';
+import ProfilePageWrapper from '@/components/profile-page-wrapper/ProfilePageWrapper';
 
 interface ProfilePageProps {
 	params: { profileId: string },
@@ -46,7 +47,7 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
 					})
 				}
 			>
-				<SideMenu />
+				<ProfilePageWrapper />
 
 			</StoreInitializer>
 		)
