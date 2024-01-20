@@ -16,24 +16,36 @@ export function getRandomId() {
 
 const SideMenu = () => {
 	const [animListRef] = useAutoAnimate();
-
 	const router = useRouter();
+
+	//userLists means custom Lists created by user that could be managed and deleted
 	const { userData, userLists, setUserLists } = useProfileDataStore();
 	const [optimisticLists, setOptimisticLists] = useOptimistic(userLists);
 
+	//basic lists created by default and couldn't be deleted
 	const [basicLists, setBasicLists] = useState([
 		{ name: 'Todays', isActive: true },
 		{ name: 'Planned', isActive: false },
 		{ name: 'All tasks', isActive: false },
 	]);
 
+	function inActivateLists(listType: 'basic' | 'custom') {
+		if (listType === 'basic') {
+			setBasicLists(basicLists.map(li => {
+				return { ...li, isActive: false };
+			}));
+		} else {
+			setOptimisticLists(userLists.map(li => {
+				return { ...li, isActive: false };
+			}));
+			setUserLists(userLists.map(li => {
+				return { ...li, isActive: false };
+			}));
+		}
+	}
+
 	function basicListClickHandler(listName: string) {
-		setOptimisticLists(userLists.map(li => {
-			return { ...li, isActive: false };
-		}));
-		setUserLists(userLists.map(li => {
-			return { ...li, isActive: false };
-		}));
+		inActivateLists('custom');
 
 		setBasicLists(basicLists.map(li => {
 			if (li.name === listName) {
@@ -43,9 +55,7 @@ const SideMenu = () => {
 	}
 
 	function customListsClickHandler(listId: number) {
-		setBasicLists(basicLists.map(li => {
-			return { ...li, isActive: false };
-		}));
+		inActivateLists('basic');
 
 		const updatedListsArr = optimisticLists.map(li => {
 			if (li.listId === listId) {
@@ -74,9 +84,8 @@ const SideMenu = () => {
 		const inactiveLists = optimisticLists.map(li => {
 			return { ...li, isActive: false };
 		});
-		setBasicLists(basicLists.map(li => {
-			return { ...li, isActive: false };
-		}));
+		inActivateLists('basic');
+
 		setOptimisticLists([...inactiveLists, {
 			listId: getRandomId(),
 			name: listName,
