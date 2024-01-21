@@ -5,17 +5,20 @@ import styles from './profilePageWrapper.module.scss'
 import MobileSideMenu from '../side-menu/MobileSideMenu'
 
 const ProfilePageWrapper = () => {
-	const [isMobile, setIsMobile] = useState<boolean>(true);
-	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(true);
+	const [isMobile, setIsMobile] = useState<boolean>(false);
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+	function defineDeviceType() {
+		if (window.innerWidth < 1024) {
+			setIsMobile(true);
+		} else {
+			setIsMobile(false);
+		}
+	}
 
 	useEffect(() => {
-		window.addEventListener("resize", () => {
-			if (window.innerWidth < 1024) {
-				setIsMobile(true);
-			} else {
-				setIsMobile(false);
-			}
-		});
+		defineDeviceType();
+		window.addEventListener("resize", defineDeviceType);
 	}, []);
 
 	return (
