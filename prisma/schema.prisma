@@ -24,7 +24,7 @@ model Tasks {
   taskId   Int    @id @default(autoincrement())
   taskName String
 
-  userId Int   @unique
+  userId Int
   user   Users @relation(fields: [userId], references: [userId])
 
   isCompleted Boolean   @default(false)
@@ -53,6 +53,6 @@ model Steps {
   stepName    String
   isCompleted Boolean @default(false)
 
-  taskId Int   @unique
+  taskId Int
   tasks  Tasks @relation(fields: [taskId], references: [taskId])
 }
