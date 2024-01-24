@@ -6,6 +6,12 @@ export interface UserData {
 	email: string,
 }
 
+export interface Step {
+	stepId: number,
+	stepName: string,
+	isCompleted: boolean,
+}
+
 export interface Task {
 	taskId: number,
 	name: string,
@@ -14,6 +20,7 @@ export interface Task {
 	priority: boolean,
 	editTime: Date,
 	executeDate: Date | null,
+	steps: Step[],
 	listId: number | null,
 }
 
