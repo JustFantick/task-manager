@@ -33,7 +33,7 @@ const TaskSection = ({
 	return (
 		<div className={styles.taskSection}>
 			<div className={styles.taskSection__taskField}>
-				<Status adaptSize={{ pc: 30, mb: 25 }}
+				<Status adaptSize={{ pc: 27, mb: 22 }}
 					isComplete={isTaskComplete}
 					onClickHandler={() => onTaskCompleteChange()}
 				/>
@@ -52,7 +52,7 @@ const TaskSection = ({
 			<ul className={styles.taskSection__stepsList}>
 				{stepsList.map(step => (
 					<li key={step.stepId} className={styles.steps}>
-						<Status isComplete={step.isCompleted} onClickHandler={()=> onStepCompleteChange(step.stepId)}/>
+						<Status isComplete={step.isCompleted} onClickHandler={() => onStepCompleteChange(step.stepId)} />
 
 						<div className={styles.steps__name}
 							contentEditable

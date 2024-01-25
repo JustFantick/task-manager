@@ -97,7 +97,7 @@
 			outline: none;
 
 			color: $primaryTextColor;
-			font-size: adaptValue(24, 18);
+			font-size: 18px;
 			font-weight: 400;
 			line-height: normal;
 			text-transform: capitalize;
@@ -105,6 +105,7 @@
 	}
 
 	&__stepsList {
+		padding-left: 2.5px;
 		display: flex;
 		flex-direction: column;
 		gap: adaptValue(17, 12);
@@ -129,6 +130,7 @@
 		flex: 1 1 auto;
 		font-size: 16px;
 		color: $primaryTextColor;
+		outline: none;
 	}
 }
 
@@ -137,6 +139,7 @@
 	opacity: 0.65;
 
 	&__icon {
+		flex: 0 0 auto;
 		$size: adaptValue(30, 25);
 		height: $size;
 		width: $size;
