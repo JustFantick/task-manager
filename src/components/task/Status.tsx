@@ -22,13 +22,19 @@ const Status = ({
 	const calcFormula = 'calc(' + adaptSize.mb + 'px' + ' + (' + adaptSize.pc + ' - ' + adaptSize.mb + ') * ((100vw - 320px) / (1920 - 320)))';
 
 	return (
-		<div className={styles.status} onClick={onClickHandler} style={{
-			width: calcFormula,
-			height: calcFormula,
-		}}>
+		<button
+			type='button'
+			title='status-button'
+			className={styles.status}
+			onClick={onClickHandler}
+			style={{
+				width: calcFormula,
+				height: calcFormula,
+			}}
+		>
 			<AnimatedCheckmark isVisible={isComplete} />
 
-		</div>
+		</button>
 	)
 }
 
