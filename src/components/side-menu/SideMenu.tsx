@@ -1,5 +1,5 @@
 'use client'
-import React, { useOptimistic, useState } from 'react'
+import React, { startTransition, useEffect, useOptimistic, useState } from 'react'
 import HorizontalLine from '../horizontal-line/HorizontalLine'
 import TasksListCard from '../tasks-list-card/TasksListCard'
 import styles from './sideMenu.module.scss'
@@ -7,95 +7,74 @@ import LogOutIcon from '../../../public/log_out.svg'
 import CreateListField from '../create-list-field/CreateListField'
 import { useRouter } from 'next/navigation'
 import { useProfileDataStore } from '@/store/userProfileData'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { removeList, createList } from '@/server-actions/lists-actions'
+import { useInteractionStates } from '@/store/interactionStates'
+import { createList } from '@/server-actions/lists-actions'
+import CustomLists from './CustomLists'
 
 export function getRandomId() {
 	return Math.ceil(Math.random() * Math.pow(10, 7));
 }
 
+type BasicListNameType = 'Todays' | 'Planned' | 'All tasks';
+
+//basic lists created by default and couldn't be deleted
+type BasicListType = {
+	id: number,
+	name: BasicListNameType,
+	filterFunct: () => void,
+}
+
+const basicLists: BasicListType[] = [
+	{ id: 1, name: 'Todays', filterFunct: () => console.log() },
+	{ id: 2, name: 'Planned', filterFunct: () => console.log() },
+	{ id: 3, name: 'All tasks', filterFunct: () => console.log() },
+];
+
+type ActiveListType = BasicListNameType | number;
+
+
 const SideMenu = () => {
-	const [animListRef] = useAutoAnimate();
 	const router = useRouter();
 
 	//userLists means custom Lists created by user that could be managed and deleted
-	const { userData, userLists, setUserLists } = useProfileDataStore();
-	const [optimisticLists, setOptimisticLists] = useOptimistic(userLists);
+	const { userData, userLists, setUserLists, userTasks, setFilteredTasks } = useProfileDataStore();
 
-	//basic lists created by default and couldn't be deleted
-	const [basicLists, setBasicLists] = useState([
-		{ name: 'Todays', isActive: true },
-		{ name: 'Planned', isActive: false },
-		{ name: 'All tasks', isActive: false },
-	]);
+	const { setChosenListName } = useInteractionStates();
 
-	function inActivateLists(listType: 'basic' | 'custom') {
-		if (listType === 'basic') {
-			setBasicLists(basicLists.map(li => {
-				return { ...li, isActive: false };
-			}));
-		} else {
-			setOptimisticLists(userLists.map(li => {
-				return { ...li, isActive: false };
-			}));
-			setUserLists(userLists.map(li => {
-				return { ...li, isActive: false };
-			}));
+	const [activeList, setActiveList] = useState<ActiveListType>('Todays');
+
+	function basicListClickHandler(listName: BasicListNameType) {
+		setActiveList(listName);
+
+		if (listName === 'Todays') {
+			setFilteredTasks(userTasks.filter(task => task.executeDate?.getDate() === new Date().getDate()));
+
+			setChosenListName(new Intl.DateTimeFormat('en-US', {
+				month: 'long',
+				day: 'numeric',
+			}).format(new Date()));
+		} else if (listName === 'Planned') {
+			setFilteredTasks(userTasks.filter(task => task.executeDate !== null));
+			setChosenListName('Planned');
+		} else if (listName === 'All tasks') {
+			setFilteredTasks(userTasks);
+			setChosenListName('All tasks');
 		}
 	}
 
-	function basicListClickHandler(listName: string) {
-		inActivateLists('custom');
+	function customListClickhandler(id: number) {
+		setActiveList(id);
+		setFilteredTasks(userTasks.filter(task => task.listId === id));
 
-		setBasicLists(basicLists.map(li => {
-			if (li.name === listName) {
-				return { ...li, isActive: true };
-			} else return { ...li, isActive: false };
-		}));
-	}
-
-	function customListsClickHandler(listId: number) {
-		inActivateLists('basic');
-
-		const updatedListsArr = optimisticLists.map(li => {
-			if (li.listId === listId) {
-				return { ...li, isActive: true };
-			} else return { ...li, isActive: false };
-		});
-
-		setOptimisticLists(updatedListsArr);
-		setUserLists(updatedListsArr);
-	}
-
-	async function removeListHandler(listId: number) {
-		const updatedListsArr = optimisticLists.filter(list => list.listId !== listId);
-		setOptimisticLists(updatedListsArr);
-
-		const response = await removeList(listId);
-
-		if (response.success === true) {
-			setUserLists(updatedListsArr);
-		} else {
-			setUserLists(userLists);
-		}
+		const foundListName = userLists.find(list => list.listId === id)?.name;
+		setChosenListName(foundListName === undefined ? 'List not found' : foundListName);
 	}
 
 	async function createListHandler(listName: string) {
-		const inactiveLists = optimisticLists.map(li => {
-			return { ...li, isActive: false };
-		});
-		inActivateLists('basic');
-
-		setOptimisticLists([...inactiveLists, {
-			listId: getRandomId(),
-			name: listName,
-			isActive: true,
-		}]);
-
 		const response = await createList(userData.userId, listName);
 
 		if (response.success === true && response.createList) {
-			setUserLists([...inactiveLists, {
+			setUserLists([...userLists, {
 				listId: response.createList.listId,
 				name: response.createList.listName,
 				isActive: true,
@@ -126,7 +105,7 @@ const SideMenu = () => {
 					{basicLists.map((list, id) => (
 						<TasksListCard key={id}
 							listName={list.name}
-							isActive={list.isActive}
+							isActive={activeList === list.name ? true : false}
 							onClickHandler={() => basicListClickHandler(list.name)}
 						/>
 					))}
@@ -135,17 +114,10 @@ const SideMenu = () => {
 
 				<HorizontalLine />
 
-				<div className={styles.sideMenuCustomLists} ref={animListRef}>
-					{optimisticLists.map(list => (
-						<TasksListCard key={list.listId}
-							listName={list.name}
-							isActive={list.isActive}
-							onClickHandler={() => customListsClickHandler(list.listId)}
-							removeListHandler={() => removeListHandler(list.listId)}
-						/>
-					))}
-				</div>
-
+				<CustomLists
+					listsArr={userLists} setListsArr={setUserLists}
+					activeList={activeList} listClickhandler={customListClickhandler}
+				/>
 
 				<div className={styles.sideMenuFooter}>
 					<HorizontalLine />
