@@ -6,6 +6,7 @@ import ArrowLeftIcon from '../../../public/arrow_left.svg'
 import BinIcon from '../../../public/bin.svg'
 import NoteSection from './NoteSection'
 import TaskSection from './TaskSection'
+import DatePickerSection from './DatePickerSection'
 
 const TaskPopup = () => {
 	const { taskPopupId } = useProfileDataStore();
@@ -13,6 +14,10 @@ const TaskPopup = () => {
 
 	function check(str: string | null) {
 		console.log(str);
+	}
+
+	function checkDate(value: Date | null) {
+		console.log(value);
 	}
 
 	return (
@@ -41,10 +46,12 @@ const TaskPopup = () => {
 						onStepCompleteChange={() => console.log('step complete')}
 
 						stepDeleteHandler={() => console.log('delete step')}
-						stepCreateHandler={()=> console.log()}
+						stepCreateHandler={() => console.log()}
 					/>
 
 					<NoteSection note={note} setNote={setNote} />
+
+					<DatePickerSection dateValue={null} setDateValue={checkDate} />
 
 				</div>
 
