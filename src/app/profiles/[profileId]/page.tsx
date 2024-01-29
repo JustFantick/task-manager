@@ -13,6 +13,7 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
 	const profileData = await prisma.users.findFirst({ where: { userId: parsedProfileId } });
 	const profileTasks = await prisma.tasks.findMany({ where: { userId: parsedProfileId } });
 	const profileLists = await prisma.lists.findMany({ where: { userId: parsedProfileId } });
+	const profileSteps = await prisma.steps.findMany({ where: { taskId: { in: profileTasks.map(task => task.taskId) } } });
 
 	const tasksToStore = profileTasks.map((task) => {
 		return {
@@ -24,6 +25,13 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
 			editTime: task.editTime,
 			executeDate: task.executeDate,
 			listId: task.listId,
+			steps: profileSteps.filter(step => step.taskId === task.taskId).map(step => {
+				return {
+					stepId: step.stepId,
+					stepName: step.stepName,
+					isCompleted: step.isCompleted,
+				}
+			}),
 		}
 	});
 
