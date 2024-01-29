@@ -41,7 +41,7 @@ const SideMenu = () => {
 
 	const { setChosenListName } = useInteractionStates();
 
-	const [activeList, setActiveList] = useState<ActiveListType>('Todays');
+	const [activeList, setActiveList] = useState<ActiveListType>('All tasks');
 
 	function basicListClickHandler(listName: BasicListNameType) {
 		setActiveList(listName);
