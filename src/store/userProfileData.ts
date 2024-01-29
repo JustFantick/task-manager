@@ -27,7 +27,6 @@ export interface Task {
 export interface List {
 	listId: number,
 	name: string,
-	isActive: boolean
 }
 
 export const useProfileDataStore = create<{

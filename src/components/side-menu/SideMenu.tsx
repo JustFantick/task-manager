@@ -77,7 +77,6 @@ const SideMenu = () => {
 			setUserLists([...userLists, {
 				listId: response.createList.listId,
 				name: response.createList.listName,
-				isActive: true,
 			}]);
 		} else {
 			setUserLists(userLists);

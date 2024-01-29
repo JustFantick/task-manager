@@ -50,7 +50,6 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
 						return {
 							listId: list.listId,
 							name: list.listName,
-							isActive: false
 						}
 					})
 				}
