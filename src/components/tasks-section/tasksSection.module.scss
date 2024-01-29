@@ -12,6 +12,17 @@
 	flex-direction: column;
 	gap: adaptValue(30, 15);
 
+	&__head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+
+		&>*:first-child {
+			flex: 0 1 90%;
+		}
+	}
+
 	&__tasksList {
 		padding-right: 5px;
 		max-height: 100%;

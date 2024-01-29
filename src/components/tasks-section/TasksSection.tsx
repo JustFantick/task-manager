@@ -5,14 +5,21 @@ import { useProfileDataStore } from '@/store/userProfileData'
 import AddTask from '../add-task-field/AddTask'
 import TaskCart from '../task/TaskCart'
 import { useInteractionStates } from '@/store/interactionStates'
+import MenuBurger from '../menu-burger/MenuBurger'
 
 const TasksSection = () => {
 	const { filteredTasks } = useProfileDataStore();
-	const { chosenListName } = useInteractionStates();
+	const { chosenListName, setIsSideMenuOpen, isMobile } = useInteractionStates();
 
 	return (
 		<main className={styles.taskSection}>
-			<MainTitle text={chosenListName} />
+			<div className={styles.taskSection__head}>
+				<MainTitle text={chosenListName} />
+
+				{isMobile &&
+					<MenuBurger onClickHandler={() => setIsSideMenuOpen(true)} />
+				}
+			</div>
 
 			<ul className={styles.taskSection__tasksList}>
 				{filteredTasks.map(task => (
