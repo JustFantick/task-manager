@@ -15,7 +15,7 @@ export function getRandomId() {
 	return Math.ceil(Math.random() * Math.pow(10, 7));
 }
 
-type BasicListNameType = 'Todays' | 'Planned' | 'All tasks';
+export type BasicListNameType = 'Todays' | 'Planned' | 'All tasks';
 
 //basic lists created by default and couldn't be deleted
 type BasicListType = {
@@ -29,17 +29,13 @@ const basicLists: BasicListType[] = [
 	{ id: 3, name: 'All tasks' },
 ];
 
-type ActiveListType = BasicListNameType | number;
-
 const SideMenu = () => {
 	const router = useRouter();
 
 	//userLists means custom Lists created by user that could be managed and deleted
 	const { userData, userLists, setUserLists, userTasks, setFilteredTasks } = useProfileDataStore();
 
-	const { setChosenListName } = useInteractionStates();
-
-	const [activeList, setActiveList] = useState<ActiveListType>('All tasks');
+	const { setChosenListName, activeList, setActiveList } = useInteractionStates();
 
 	function basicListClickHandler(listName: BasicListNameType) {
 		setActiveList(listName);
