@@ -21,17 +21,15 @@ type BasicListNameType = 'Todays' | 'Planned' | 'All tasks';
 type BasicListType = {
 	id: number,
 	name: BasicListNameType,
-	filterFunct: () => void,
 }
 
 const basicLists: BasicListType[] = [
-	{ id: 1, name: 'Todays', filterFunct: () => console.log() },
-	{ id: 2, name: 'Planned', filterFunct: () => console.log() },
-	{ id: 3, name: 'All tasks', filterFunct: () => console.log() },
+	{ id: 1, name: 'Todays' },
+	{ id: 2, name: 'Planned' },
+	{ id: 3, name: 'All tasks' },
 ];
 
 type ActiveListType = BasicListNameType | number;
-
 
 const SideMenu = () => {
 	const router = useRouter();
