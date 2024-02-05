@@ -6,11 +6,12 @@ import AddTask from '../add-task-field/AddTask'
 import TaskCart from '../task/TaskCart'
 import { useInteractionStates } from '@/store/interactionStates'
 import MenuBurger from '../menu-burger/MenuBurger'
-import { changeTaskComplete, changeTaskPriority } from '@/server-actions/task-actions'
+import { changeTaskComplete, changeTaskPriority, createTask } from '@/server-actions/task-actions'
+import { getRandomId } from '../side-menu/SideMenu'
 
 const TasksSection = () => {
-	const { userTasks, setUserTasks, setTaskPopupId } = useProfileDataStore();
-	const { chosenListName, setIsSideMenuOpen, isMobile, setIsTaskPopupOpen } = useInteractionStates();
+	const { userData, userTasks, setUserTasks, setTaskPopupId } = useProfileDataStore();
+	const { chosenListName, setIsSideMenuOpen, isMobile, setIsTaskPopupOpen, activeList } = useInteractionStates();
 
 	const [optimisticTasks, setOptimisticTasks] = useOptimistic(
 		userTasks,
@@ -76,6 +77,45 @@ const TasksSection = () => {
 		}
 	}
 
+	async function addTaskHandler(name: string) {
+		const listId = typeof activeList === 'number' ? activeList : null;
+		startTransition(() => {
+			setOptimisticTasks([
+				...userTasks,
+				{
+					taskId: getRandomId(),
+					name: name,
+					note: '',
+					isCompleted: false,
+					priority: false,
+					editTime: new Date(),
+					executeDate: null,
+					steps: [],
+					listId: listId,
+				}
+			]);
+		});
+
+		const response = await createTask(userData.userId, name, listId);
+
+		if (response.success && response.createdTask) {
+			setUserTasks([
+				...userTasks,
+				{
+					taskId: response.createdTask.taskId,
+					name: response.createdTask.taskName,
+					note: response.createdTask.note,
+					isCompleted: response.createdTask.isCompleted,
+					priority: response.createdTask.priority,
+					editTime: response.createdTask.editTime,
+					executeDate: response.createdTask.executeDate,
+					steps: [],
+					listId: response.createdTask.listId,
+				},
+			])
+		}
+	}
+
 	return (
 		<main className={styles.taskSection}>
 			<div className={styles.taskSection__head}>
@@ -101,7 +141,7 @@ const TasksSection = () => {
 
 			</ul>
 
-			<AddTask />
+			<AddTask addTaskFunc={addTaskHandler} />
 
 		</main>
 	)
