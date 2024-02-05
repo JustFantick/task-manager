@@ -5,6 +5,7 @@ import styles from './tasksSection.module.scss'
 import TaskCart from '../task/TaskCart';
 import { changeTaskComplete, changeTaskPriority } from '@/server-actions/task-actions'
 import { useInteractionStates } from '@/store/interactionStates';
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 interface TasksListProps {
 	tasksList: Task[],
@@ -85,8 +86,10 @@ const TasksList = ({ tasksList, setTasksList, activeList }: TasksListProps) => {
 		}
 	}
 
+	const [animListRef] = useAutoAnimate();
+
 	return (
-		<ul className={styles.taskSection__tasksList}>
+		<ul className={styles.taskSection__tasksList} ref={animListRef}>
 			{
 				typeof activeList === 'number' ?
 					optimisticTasks.filter(task => task.listId === activeList).map(task => (
