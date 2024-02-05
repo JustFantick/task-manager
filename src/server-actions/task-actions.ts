@@ -1,12 +1,13 @@
 'use server'
 import prisma from "../../lib/prisma";
 
-export async function createTask(userId: number, name: string) {
+export async function createTask(userId: number, name: string, listId: number | null) {
 	try {
 		const createdTask = await prisma.tasks.create({
 			data: {
 				userId: userId,
 				taskName: name,
+				listId: listId,
 			}
 		});
 
