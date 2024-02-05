@@ -1,21 +1,18 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styles from './addTask.module.scss'
 import PlusIcon from '../../../public/plus.svg'
 import { motion } from 'framer-motion'
 
-const AddTask = () => {
+const AddTask = ({ addTaskFunc }: { addTaskFunc: (name: string) => void }) => {
 	const formRef = useRef<HTMLFormElement | null>(null);
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const [isFocused, setIsFocused] = useState(false);
 
-	useEffect(() => {
-		console.log(isFocused);
-	}, [isFocused]);
-
 	function actionHandler() {
-		console.log(inputRef.current?.value);
+		if (inputRef.current?.value) addTaskFunc(inputRef.current.value);
+
 		formRef.current?.reset();
 		inputRef.current?.blur();
 	}
