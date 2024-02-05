@@ -4,20 +4,27 @@ import Star from './Star'
 import styles from './taskCart.module.scss'
 
 interface TaskCartProps {
-	taskId: number,
 	title: string,
 	isComplete: boolean,
 	isPrioritize: boolean,
+
+	taskClickHandler: () => void,
+	completeChangeHandler: () => void,
+	priorityChangeHandler: () => void,
 }
 
-const TaskCart = ({ taskId, title, isComplete, isPrioritize }: TaskCartProps) => {
+const TaskCart = ({
+	title, isComplete, isPrioritize,
+	taskClickHandler, priorityChangeHandler, completeChangeHandler,
+
+}: TaskCartProps) => {
 	return (
 		<div className={styles.taskContainer}>
-			<Status isComplete={isComplete} />
+			<Status isComplete={isComplete} onClickHandler={completeChangeHandler} />
 
-			<div className={styles.taskContainer__title}>{title}</div>
+			<div className={styles.taskContainer__title} onClick={taskClickHandler}>{title}</div>
 
-			<Star isComplete={isPrioritize} />
+			<Star isComplete={isPrioritize} onClickHandler={priorityChangeHandler} />
 
 		</div>
 	)
