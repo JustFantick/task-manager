@@ -7,60 +7,134 @@ import BinIcon from '../../../public/bin.svg'
 import NoteSection from './NoteSection'
 import TaskSection from './TaskSection'
 import DatePickerSection from './DatePickerSection'
+import { useInteractionStates } from '@/store/interactionStates'
+import { changeTaskComplete, changeTaskName } from '@/server-actions/task-actions'
+import { changeStepComplete, changeStepName, createStep } from '@/server-actions/step-actions'
 
 const TaskPopup = () => {
-	const { taskPopupId } = useProfileDataStore();
-	const [note, setNote] = useState<string>('');
+	const { taskPopupId, userTasks, setUserTasks } = useProfileDataStore();
+	const { setIsTaskPopupOpen } = useInteractionStates();
 
-	function check(str: string | null) {
-		console.log(str);
+	const task = userTasks.find(task => task.taskId === taskPopupId);
+
+	async function taskNameChangeHandler(newName: string) {
+		const response = await changeTaskName(taskPopupId, newName);
+
+		if (response.success) {
+			setUserTasks(userTasks.map(task => {
+				if (task.taskId === taskPopupId) {
+					return { ...task, name: newName };
+				} else return task;
+			}));
+		}
 	}
 
-	function checkDate(value: Date | null) {
-		console.log(value);
+	async function taskCompleteChangeHandler(completeStatus: boolean) {
+		const response = await changeTaskComplete(taskPopupId, completeStatus);
+
+		if (response.success) {
+			setUserTasks(userTasks.map(task => {
+				if (task.taskId === taskPopupId) {
+					return { ...task, isCompleted: completeStatus };
+				} else return task;
+			}));
+		}
 	}
+
+	async function stepNameChangeHandler(stepId: number, newName: string) {
+		const response = await changeStepName(stepId, newName);
+
+		if (response.success) {
+			setUserTasks(userTasks.map(task => {
+				if (task.taskId === taskPopupId) {
+					return {
+						...task,
+						steps: task.steps.map(step => {
+							if (step.stepId === stepId) {
+								return { ...step, stepName: newName };
+							} else return step;
+						})
+					};
+				} else return task;
+			}));
+		}
+	}
+
+	async function stepCompleteChangeHandler(stepId: number, completeStatus: boolean) {
+		const response = await changeStepComplete(stepId, completeStatus);
+
+		if (response.success) {
+			setUserTasks(userTasks.map(task => {
+				if (task.taskId === taskPopupId) {
+					return {
+						...task,
+						steps: task.steps.map(step => {
+							if (step.stepId === stepId) {
+								return { ...step, isCompleted: completeStatus };
+							} else return step;
+						})
+					};
+				} else return task;
+			}));
+		}
+	}
+
+	async function createStepHandler(stepName: string) {
+		const response = await createStep(taskPopupId, stepName);
+
+		if (response.success && response.createdStep) {
+			setUserTasks(userTasks.map(task => {
+				if (task.taskId === taskPopupId) {
+					return { ...task, steps: [...task.steps, response.createdStep] };
+				} else return task;
+			}))
+		}
+	}
+
+	function setDateValue(date: Date | null) {
+		console.log(date);
+	}
+
+
+	if (taskPopupId === 0 || taskPopupId === null || !task) return null;
 
 	return (
 		<div className={styles.taskPopup}>
 			<div className={styles.taskPopupContent}>
 				<div className={styles.taskPopupContent__dataSections}>
 					<TaskSection
-						taskName='fake task'
-						onTaskNameChange={check}
-						isTaskComplete={true}
-						onTaskCompleteChange={() => console.log('task complete')}
+						taskName={task.name}
+						onTaskNameChange={taskNameChangeHandler}
+						isTaskComplete={task.isCompleted}
+						onTaskCompleteChange={taskCompleteChangeHandler}
 
-						stepsList={[
-							{
-								stepId: 1,
-								stepName: 'frst step',
-								isCompleted: false,
-							},
-							{
-								stepId: 2,
-								stepName: 'scnd step',
-								isCompleted: true,
-							}
-						]}
-						onStepNameChange={() => console.log('step name')}
-						onStepCompleteChange={() => console.log('step complete')}
+						stepsList={task.steps}
+						onStepNameChange={stepNameChangeHandler}
+						onStepCompleteChange={stepCompleteChangeHandler}
 
 						stepDeleteHandler={() => console.log('delete step')}
-						stepCreateHandler={() => console.log()}
+						stepCreateHandler={createStepHandler}
 					/>
 
-					<NoteSection note={note} setNote={setNote} />
+					<NoteSection note={task.note ? task.note : ''} setNote={() => console.log('set note')} />
 
-					<DatePickerSection dateValue={null} setDateValue={checkDate} />
+					<DatePickerSection dateValue={task.executeDate} setDateValue={setDateValue} />
 
 				</div>
 
 
 				<HorizontalLine />
 				<div className={styles.taskPopupContent__footer}>
-					<ArrowLeftIcon className={styles.arrowLeftIcon} onClick={() => console.log('arrow')} />
+					<ArrowLeftIcon className={styles.arrowLeftIcon} onClick={() => setIsTaskPopupOpen(false)} />
 
-					<div>Last edit: <time dateTime=''>20:00</time> </div>
+					<div>Last edit: <time dateTime=''>
+						{new Intl.DateTimeFormat('en-US', {
+							hour: '2-digit',
+							minute: '2-digit',
+							hour12: false,
+						}).format(task.editTime)}
+					</time>
+					</div>
 
 					<BinIcon className={styles.binIcon} onClick={() => console.log('bin')} />
 
@@ -71,5 +145,4 @@ const TaskPopup = () => {
 		</div>
 	)
 }
-
 export default TaskPopup

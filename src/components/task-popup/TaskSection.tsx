@@ -1,5 +1,5 @@
 import { Step } from '@/store/userProfileData'
-import React, { startTransition, useOptimistic, useState } from 'react'
+import React, { startTransition, useEffect, useOptimistic, useState } from 'react'
 import Status from '../task/Status'
 import styles from './taskPopup.module.scss'
 import PlusIcon from '../../../public/plus.svg'
@@ -8,11 +8,11 @@ interface TaskSectionProps {
 	taskName: string,
 	onTaskNameChange: (name: string) => void,
 	isTaskComplete: boolean,
-	onTaskCompleteChange: () => void,
+	onTaskCompleteChange: (status: boolean) => void,
 
 	stepsList: Step[],
 	onStepNameChange: (id: number, name: string) => void,
-	onStepCompleteChange: (id: number) => void,
+	onStepCompleteChange: (id: number, status: boolean) => void,
 
 	stepDeleteHandler: (id: number) => void,
 	stepCreateHandler: (name: string) => void,
@@ -26,7 +26,14 @@ const TaskSection = ({
 	onStepCompleteChange, onStepNameChange,
 }: TaskSectionProps) => {
 	const [optimisticTaskStatus, setOptimisticTaskStatus] = useOptimistic(isTaskComplete);
-	const [optimisticStepsList, setOptimisticStepsList] = useOptimistic<Step[]>(stepsList)
+	const [optimisticStepsList, setOptimisticStepsList] = useOptimistic<Step[]>(stepsList);
+
+	//needed to update inner optimistic state, couse useOptimistic doesnt get updated when outer source updates
+	useEffect(() => {
+		startTransition(() => {
+			setOptimisticStepsList(stepsList);
+		})
+	}, [stepsList]);
 
 	return (
 		<div className={styles.taskSection}>
@@ -34,10 +41,11 @@ const TaskSection = ({
 				<Status adaptSize={{ pc: 27, mb: 22 }}
 					isComplete={optimisticTaskStatus}
 					onClickHandler={async () => {
+						let newVal = !optimisticTaskStatus;
 						startTransition(() => {
-							setOptimisticTaskStatus(!optimisticTaskStatus);
+							setOptimisticTaskStatus(newVal);
 						});
-						await onTaskCompleteChange();
+						await onTaskCompleteChange(newVal);
 					}}
 				/>
 
@@ -55,15 +63,17 @@ const TaskSection = ({
 				{optimisticStepsList.map(step => (
 					<li key={step.stepId} className={styles.steps}>
 						<Status isComplete={step.isCompleted} onClickHandler={async () => {
+							let newVal = !step.isCompleted;
 							startTransition(() => {
 								setOptimisticStepsList(optimisticStepsList.map(li => {
+									newVal = !li.isCompleted
 									if (li.stepId === step.stepId) {
-										return { ...li, isCompleted: !li.isCompleted };
+										return { ...li, isCompleted: newVal };
 									} else return li;
 								}))
 							});
 
-							await onStepCompleteChange(step.stepId);
+							await onStepCompleteChange(step.stepId, newVal);
 						}} />
 
 						<input type="text" name={`step${step.stepId}`}
