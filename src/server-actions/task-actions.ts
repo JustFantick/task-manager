@@ -113,7 +113,7 @@ export async function changeTaskExecutionDate(taskId: number, newDate: Date | nu
 	try {
 		const updatedTask = await prisma.tasks.update({
 			where: { taskId: taskId },
-			data: { executeDate: null }
+			data: { executeDate: newDate },
 		});
 
 		if (updatedTask) {
