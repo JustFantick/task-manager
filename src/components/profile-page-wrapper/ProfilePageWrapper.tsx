@@ -34,7 +34,7 @@ const ProfilePageWrapper = () => {
 
 			<TasksSection />
 
-			{isTaskPopupOpen && <TaskPopup />}
+			<TaskPopup />
 
 		</div>
 	)
