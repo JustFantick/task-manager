@@ -13,8 +13,8 @@ const DatePickerSection = ({ dateValue, setDateValue }: DatePickerSectionProps) 
 		<LocalizationProvider dateAdapter={AdapterDayjs}>
 			<DatePicker
 				label="Execution date"
-				defaultValue={dateValue ? dateValue : null}
-				onChange={(val) => setDateValue(dayjs(val).toDate())}
+				defaultValue={dateValue ? dayjs(dateValue) : null}
+				onChange={(val) => val && setDateValue(dayjs(val).toDate())}
 
 				slotProps={{
 					field: { clearable: true, onClear: () => setDateValue(null) },

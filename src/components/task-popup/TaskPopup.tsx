@@ -8,7 +8,7 @@ import NoteSection from './NoteSection'
 import TaskSection from './TaskSection'
 import DatePickerSection from './DatePickerSection'
 import { useInteractionStates } from '@/store/interactionStates'
-import { changeTaskComplete, changeTaskName } from '@/server-actions/task-actions'
+import { changeTaskComplete, changeTaskExecutionDate, changeTaskName, changeTaskNote } from '@/server-actions/task-actions'
 import { changeStepComplete, changeStepName, createStep } from '@/server-actions/step-actions'
 
 const TaskPopup = () => {
@@ -91,10 +91,29 @@ const TaskPopup = () => {
 		}
 	}
 
-	function setDateValue(date: Date | null) {
-		console.log(date);
+	async function changeNoteHandler(noteText: string) {
+		const response = await changeTaskNote(taskPopupId, noteText);
+
+		if (response.success) {
+			setUserTasks(userTasks.map(task => {
+				if (task.taskId === taskPopupId) {
+					return { ...task, note: noteText };
+				} else return task;
+			}))
+		}
 	}
 
+	async function changeDateHandler(date: Date | null) {
+		const response = await changeTaskExecutionDate(taskPopupId, date);
+
+		if (response.success) {
+			setUserTasks(userTasks.map(task => {
+				if (task.taskId === taskPopupId) {
+					return { ...task, executeDate: date };
+				} else return task;
+			}));
+		}
+	}
 
 	if (taskPopupId === 0 || taskPopupId === null || !task) return null;
 
@@ -116,9 +135,9 @@ const TaskPopup = () => {
 						stepCreateHandler={createStepHandler}
 					/>
 
-					<NoteSection note={task.note ? task.note : ''} setNote={() => console.log('set note')} />
+					<NoteSection note={task.note ? task.note : ''} setNote={changeNoteHandler} />
 
-					<DatePickerSection dateValue={task.executeDate} setDateValue={setDateValue} />
+					<DatePickerSection dateValue={task.executeDate} setDateValue={changeDateHandler} />
 
 				</div>
 

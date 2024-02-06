@@ -9,9 +9,7 @@ interface NoteSectionProps {
 const NoteSection = ({ note, setNote }: NoteSectionProps) => {
 	const textareaRef = useRef<null | HTMLTextAreaElement>(null);
 
-	function onChangeHandler(e: ChangeEvent) {
-		setNote(textareaRef.current?.value);
-
+	function onChangeHandler() {
 		if (textareaRef.current) {
 			if (textareaRef.current?.scrollHeight >= 170) return;
 			textareaRef.current.style.height = `auto`;
@@ -24,8 +22,13 @@ const NoteSection = ({ note, setNote }: NoteSectionProps) => {
 			name="note"
 			ref={textareaRef}
 			placeholder='Note text'
-			value={note}
-			onChange={onChangeHandler}>
+			defaultValue={note}
+			onChange={onChangeHandler}
+			onKeyDown={(e) => {
+				if (e.code === "Enter") e.currentTarget.blur();
+			}}
+			onBlur={(e) => setNote(e.currentTarget.value)}
+		>
 
 		</textarea>
 	)
