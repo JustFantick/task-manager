@@ -93,9 +93,9 @@
 	&__taskField {
 		@include rowStyles();
 
-		div {
+		input {
 			outline: none;
-
+			border: none;
 			color: $primaryTextColor;
 			font-size: 18px;
 			font-weight: 400;
@@ -131,6 +131,7 @@
 		font-size: 16px;
 		color: $primaryTextColor;
 		outline: none;
+		border: none;
 	}
 }
 

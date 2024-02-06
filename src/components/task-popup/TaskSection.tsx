@@ -1,5 +1,5 @@
 import { Step } from '@/store/userProfileData'
-import React, { useState } from 'react'
+import React, { startTransition, useOptimistic, useState } from 'react'
 import Status from '../task/Status'
 import styles from './taskPopup.module.scss'
 import PlusIcon from '../../../public/plus.svg'
@@ -25,44 +25,55 @@ const TaskSection = ({
 	stepDeleteHandler, stepCreateHandler,
 	onStepCompleteChange, onStepNameChange,
 }: TaskSectionProps) => {
-	function toString(str: string | null) {
-		if (str !== null) return str;
-		return '';
-	}
+	const [optimisticTaskStatus, setOptimisticTaskStatus] = useOptimistic(isTaskComplete);
+	const [optimisticStepsList, setOptimisticStepsList] = useOptimistic<Step[]>(stepsList)
 
 	return (
 		<div className={styles.taskSection}>
 			<div className={styles.taskSection__taskField}>
 				<Status adaptSize={{ pc: 27, mb: 22 }}
-					isComplete={isTaskComplete}
-					onClickHandler={() => onTaskCompleteChange()}
+					isComplete={optimisticTaskStatus}
+					onClickHandler={async () => {
+						startTransition(() => {
+							setOptimisticTaskStatus(!optimisticTaskStatus);
+						});
+						await onTaskCompleteChange();
+					}}
 				/>
 
-				<div contentEditable
+				<input type="text" name="task-name"
+					defaultValue={taskName}
 					onKeyDown={(e) => {
 						if (e.code === "Enter") e.currentTarget.blur();
 					}}
-					onBlur={(e) => onTaskNameChange(toString(e.currentTarget.textContent))}
-				>
-					{taskName}
-				</div>
+					onBlur={(e) => onTaskNameChange(e.currentTarget.value)}
+				/>
 
 			</div>
 
 			<ul className={styles.taskSection__stepsList}>
-				{stepsList.map(step => (
+				{optimisticStepsList.map(step => (
 					<li key={step.stepId} className={styles.steps}>
-						<Status isComplete={step.isCompleted} onClickHandler={() => onStepCompleteChange(step.stepId)} />
+						<Status isComplete={step.isCompleted} onClickHandler={async () => {
+							startTransition(() => {
+								setOptimisticStepsList(optimisticStepsList.map(li => {
+									if (li.stepId === step.stepId) {
+										return { ...li, isCompleted: !li.isCompleted };
+									} else return li;
+								}))
+							});
 
-						<div className={styles.steps__name}
-							contentEditable
+							await onStepCompleteChange(step.stepId);
+						}} />
+
+						<input type="text" name={`step${step.stepId}`}
+							className={styles.steps__name}
+							defaultValue={step.stepName}
 							onKeyDown={(e) => {
 								if (e.code === "Enter") e.currentTarget.blur();
 							}}
-							onBlur={(e) => onStepNameChange(step.stepId, toString(e.currentTarget.textContent))}
-						>
-							{step.stepName}
-						</div>
+							onBlur={(e) => onStepNameChange(step.stepId, e.currentTarget.value)}
+						/>
 
 					</li>
 				))}
@@ -77,7 +88,7 @@ const TaskSection = ({
 					placeholder='Add step'
 					onKeyUpCapture={(e) => {
 						if (e.code === "Enter") {
-							stepCreateHandler(toString(e.currentTarget.textContent));
+							stepCreateHandler(e.currentTarget.value);
 							e.currentTarget.value = '';
 							e.currentTarget.blur();
 						};
