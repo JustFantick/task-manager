@@ -4,17 +4,20 @@ import TasksListCard from '../tasks-list-card/TasksListCard'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { List } from '@/store/userProfileData'
 import { removeList } from '@/server-actions/lists-actions'
+import { BasicListNameType } from './SideMenu'
 
 interface CustomListsProps {
 	listsArr: List[],
 	setListsArr: (arr: List[]) => void,
 	activeList: string | number,
+	setActiveList: (listValue: number | BasicListNameType) => void,
 	listClickhandler: (id: number) => void,
 }
 
 const CustomLists = ({
 	listsArr, setListsArr,
-	activeList, listClickhandler
+	activeList, setActiveList,
+	listClickhandler
 }: CustomListsProps) => {
 	const [animListRef] = useAutoAnimate();
 
@@ -34,6 +37,7 @@ const CustomLists = ({
 		const response = await removeList(listId);
 		if (response.success) {
 			await setListsArr(listsArr.filter(list => list.listId !== listId));
+			setActiveList('All tasks');
 		} else {
 			await setListsArr(listsArr);
 		}

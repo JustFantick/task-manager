@@ -109,7 +109,8 @@ const SideMenu = () => {
 
 				<CustomLists
 					listsArr={userLists} setListsArr={setUserLists}
-					activeList={activeList} listClickhandler={customListClickhandler}
+					activeList={activeList} setActiveList={setActiveList}
+					listClickhandler={customListClickhandler}
 				/>
 
 				<div className={styles.sideMenuFooter}>
