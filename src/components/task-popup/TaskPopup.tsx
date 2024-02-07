@@ -23,7 +23,6 @@ const TaskPopup = () => {
 				>
 					<motion.div
 						id='task-popup-content'
-						style={{ float: 'right' }}
 						initial={{ x: '100%' }}
 						animate={{ x: 0 }}
 						exit={{ x: '100%' }}

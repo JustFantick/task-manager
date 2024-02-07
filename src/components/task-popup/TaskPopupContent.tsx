@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './taskPopup.module.scss'
 import { useProfileDataStore } from '@/store/userProfileData'
 import HorizontalLine from '../horizontal-line/HorizontalLine'
@@ -8,11 +8,13 @@ import NoteSection from './NoteSection'
 import TaskSection from './TaskSection'
 import DatePickerSection from './DatePickerSection'
 import { useInteractionStates } from '@/store/interactionStates'
-import { changeTaskComplete, changeTaskExecutionDate, changeTaskName, changeTaskNote } from '@/server-actions/task-actions'
+import { changeTaskComplete, changeTaskExecutionDate, changeTaskName, changeTaskNote, deleteTask } from '@/server-actions/task-actions'
 import { changeStepComplete, changeStepName, createStep } from '@/server-actions/step-actions'
+import DeleteTaskPopup from './delete-task-popup/DeleteTaskPopup'
 
 const TaskPopupContent = () => {
-	const { taskPopupId, userTasks, setUserTasks } = useProfileDataStore();
+	const [isDeletePopupOpen, setIsDeletePopupOpen] = useState<boolean>(false);
+	const { taskPopupId, userTasks, setUserTasks, setTaskPopupId } = useProfileDataStore();
 	const { setIsTaskPopupOpen } = useInteractionStates();
 
 	const task = userTasks.find(task => task.taskId === taskPopupId);
@@ -115,50 +117,69 @@ const TaskPopupContent = () => {
 		}
 	}
 
+	async function deleteTaskHandler() {
+		const response = await deleteTask(taskPopupId);
+
+		if (response.success) {
+			setUserTasks(userTasks.filter(task => task.taskId !== taskPopupId));
+			setTaskPopupId(0);
+			setIsTaskPopupOpen(false);
+		}
+	}
+
 	if (taskPopupId === 0 || taskPopupId === null || !task) return null;
 
 	return (
-		<div className={styles.taskPopupContent}>
-			<div className={styles.taskPopupContent__dataSections}>
-				<TaskSection
-					taskName={task.name}
-					onTaskNameChange={taskNameChangeHandler}
-					isTaskComplete={task.isCompleted}
-					onTaskCompleteChange={taskCompleteChangeHandler}
+		<>
+			<div className={styles.taskPopupContent}>
+				<div className={styles.taskPopupContent__dataSections}>
+					<TaskSection
+						taskName={task.name}
+						onTaskNameChange={taskNameChangeHandler}
+						isTaskComplete={task.isCompleted}
+						onTaskCompleteChange={taskCompleteChangeHandler}
 
-					stepsList={task.steps}
-					onStepNameChange={stepNameChangeHandler}
-					onStepCompleteChange={stepCompleteChangeHandler}
+						stepsList={task.steps}
+						onStepNameChange={stepNameChangeHandler}
+						onStepCompleteChange={stepCompleteChangeHandler}
 
-					stepDeleteHandler={() => console.log('delete step')}
-					stepCreateHandler={createStepHandler}
-				/>
+						stepDeleteHandler={() => console.log('delete step')}
+						stepCreateHandler={createStepHandler}
+					/>
 
-				<NoteSection note={task.note ? task.note : ''} setNote={changeNoteHandler} />
+					<NoteSection note={task.note ? task.note : ''} setNote={changeNoteHandler} />
 
-				<DatePickerSection dateValue={task.executeDate} setDateValue={changeDateHandler} />
+					<DatePickerSection dateValue={task.executeDate} setDateValue={changeDateHandler} />
 
-			</div>
-
-
-			<HorizontalLine />
-			<div className={styles.taskPopupContent__footer}>
-				<ArrowLeftIcon className={styles.arrowLeftIcon} onClick={() => setIsTaskPopupOpen(false)} />
-
-				<div>Last edit: <time dateTime=''>
-					{new Intl.DateTimeFormat('en-US', {
-						hour: '2-digit',
-						minute: '2-digit',
-						hour12: false,
-					}).format(task.editTime)}
-				</time>
 				</div>
 
-				<BinIcon className={styles.binIcon} onClick={() => console.log('bin')} />
+
+				<HorizontalLine />
+				<div className={styles.taskPopupContent__footer}>
+					<ArrowLeftIcon className={styles.arrowLeftIcon} onClick={() => setIsTaskPopupOpen(false)} />
+
+					<div>Last edit: <time dateTime=''>
+						{new Intl.DateTimeFormat('en-US', {
+							hour: '2-digit',
+							minute: '2-digit',
+							hour12: false,
+						}).format(task.editTime)}
+					</time>
+					</div>
+
+					<BinIcon className={styles.binIcon} onClick={() => setIsDeletePopupOpen(true)} />
+
+				</div>
 
 			</div>
 
-		</div>
+			<DeleteTaskPopup
+				taskName={task.name}
+				isOpen={isDeletePopupOpen}
+				setIsOpen={setIsDeletePopupOpen}
+				deleteTask={deleteTaskHandler}
+			/>
+		</>
 	)
 }
 
