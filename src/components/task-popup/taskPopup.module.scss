@@ -92,6 +92,10 @@
 	&__taskField {
 		@include rowStyles();
 
+		&>*:first-child {
+			flex: 0 0 auto;
+		}
+
 		input {
 			outline: none;
 			border: none;
@@ -99,7 +103,6 @@
 			font-size: 18px;
 			font-weight: 400;
 			line-height: normal;
-			text-transform: capitalize;
 		}
 	}
 
