@@ -38,3 +38,27 @@
 		}
 	}
 }
+
+.editableListName {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	&__input {
+		max-height: calc(adaptValue(34, 20)*2.5);
+		overflow: hidden;
+		font-size: adaptValue(34, 20);
+		font-weight: 600;
+		background: none;
+		border: none;
+		outline: none;
+		color: $primaryTextColor;
+	}
+
+	&__icon {
+		flex: 0 0 auto;
+		$size: adaptValue(30, 20);
+		height: $size;
+		width: $size;
+	}
+}
