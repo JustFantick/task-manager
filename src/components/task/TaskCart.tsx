@@ -22,7 +22,7 @@ const TaskCart = ({
 		<div className={styles.taskContainer}>
 			<Status isComplete={isComplete} onClickHandler={completeChangeHandler} />
 
-			<div className={styles.taskContainer__title} onClick={taskClickHandler}>{title}</div>
+			<div className={styles.taskContainer__title} onClick={taskClickHandler} data-iscomplete={isComplete}>{title}</div>
 
 			<Star isComplete={isPrioritize} onClickHandler={priorityChangeHandler} />
 
