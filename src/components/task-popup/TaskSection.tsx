@@ -85,6 +85,16 @@ const TaskSection = ({
 							onBlur={(e) => onStepNameChange(step.stepId, e.currentTarget.value)}
 						/>
 
+						<button className={styles.steps__deleteBtn}
+							type="button"
+							onClick={async () => {
+								startTransition(() => {
+									setOptimisticStepsList(optimisticStepsList.filter(li => li.stepId !== step.stepId));
+								});
+								await stepDeleteHandler(step.stepId);
+							}}
+						></button>
+
 					</li>
 				))}
 

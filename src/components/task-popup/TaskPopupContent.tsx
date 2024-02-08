@@ -9,7 +9,7 @@ import TaskSection from './TaskSection'
 import DatePickerSection from './DatePickerSection'
 import { useInteractionStates } from '@/store/interactionStates'
 import { changeTaskComplete, changeTaskExecutionDate, changeTaskName, changeTaskNote, deleteTask } from '@/server-actions/task-actions'
-import { changeStepComplete, changeStepName, createStep } from '@/server-actions/step-actions'
+import { changeStepComplete, changeStepName, createStep, deleteStep } from '@/server-actions/step-actions'
 import DeleteTaskPopup from './delete-task-popup/DeleteTaskPopup'
 
 const TaskPopupContent = () => {
@@ -117,6 +117,18 @@ const TaskPopupContent = () => {
 		}
 	}
 
+	async function deleteStepHandler(stepId: number) {
+		const response = await deleteStep(stepId);
+
+		if (response.success) {
+			setUserTasks(userTasks.map(task => {
+				if (task.taskId === taskPopupId) {
+					return { ...task, steps: task.steps.filter(step => step.stepId !== stepId) };
+				} else return task;
+			}));
+		}
+	}
+
 	async function deleteTaskHandler() {
 		const response = await deleteTask(taskPopupId);
 
@@ -143,7 +155,7 @@ const TaskPopupContent = () => {
 						onStepNameChange={stepNameChangeHandler}
 						onStepCompleteChange={stepCompleteChangeHandler}
 
-						stepDeleteHandler={() => console.log('delete step')}
+						stepDeleteHandler={deleteStepHandler}
 						stepCreateHandler={createStepHandler}
 					/>
 
