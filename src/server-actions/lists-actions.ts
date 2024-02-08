@@ -24,6 +24,27 @@ export async function createList(userId: number, listName: string) {
 	}
 }
 
+export async function renameList(listId: number, newName: string) {
+	try {
+		const updatedList = await prisma.lists.update({
+			where: { listId: listId },
+			data: { listName: newName }
+		})
+
+		if (updatedList) {
+			return { success: true };
+		} else {
+			return { success: false, message: 'Failed list update' }
+		}
+	} catch (error) {
+		return {
+			success: false,
+			message: 'Database error occurred',
+			error: error,
+		}
+	}
+}
+
 export async function removeList(listId: number) {
 	try {
 		const removedList = await prisma.lists.delete({
