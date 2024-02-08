@@ -77,6 +77,7 @@ const TaskSection = ({
 						}} />
 
 						<input type="text" name={`step${step.stepId}`}
+							data-iscomplete={step.isCompleted}
 							className={styles.steps__name}
 							defaultValue={step.stepName}
 							onKeyDown={(e) => {
@@ -94,7 +95,6 @@ const TaskSection = ({
 								await stepDeleteHandler(step.stepId);
 							}}
 						></button>
-
 					</li>
 				))}
 

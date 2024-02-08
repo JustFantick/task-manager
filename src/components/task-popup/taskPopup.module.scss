@@ -145,6 +145,10 @@
 		color: $primaryTextColor;
 		outline: none;
 		border: none;
+
+		&[data-iscomplete=true] {
+			text-decoration: line-through;
+		}
 	}
 
 	&__deleteBtn {
