@@ -28,6 +28,11 @@ const TaskSection = ({
 	const [optimisticTaskStatus, setOptimisticTaskStatus] = useOptimistic(isTaskComplete);
 	const [optimisticStepsList, setOptimisticStepsList] = useOptimistic<Step[]>(stepsList);
 
+	//fixes random optimistic change cancel, so task status displays incorrect
+	useEffect(() => {
+		setOptimisticTaskStatus(isTaskComplete);
+	}, [isTaskComplete]);
+
 	//needed to update inner optimistic state, couse useOptimistic doesnt get updated when outer source updates
 	useEffect(() => {
 		startTransition(() => {
@@ -66,7 +71,6 @@ const TaskSection = ({
 							let newVal = !step.isCompleted;
 							startTransition(() => {
 								setOptimisticStepsList(optimisticStepsList.map(li => {
-									newVal = !li.isCompleted
 									if (li.stepId === step.stepId) {
 										return { ...li, isCompleted: newVal };
 									} else return li;
