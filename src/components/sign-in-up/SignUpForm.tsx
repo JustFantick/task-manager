@@ -5,6 +5,7 @@ import Checkbox from '../form/Checkbox'
 import SubmitButton from '../form/SubmitButton'
 import { signUp } from '@/server-actions/form-actions'
 import { useRouter } from 'next/navigation'
+import { login } from '../../../lib/auth-session'
 
 const SignUpForm = () => {
 	const router = useRouter();
@@ -14,7 +15,7 @@ const SignUpForm = () => {
 			const res = await signUp(formData);
 
 			if (res.success === true) {
-				//redirect to user page
+				await login(formData);
 				router.push(`/profiles/${res.userId}`);
 			}
 		}} className={styles.formContainer}>

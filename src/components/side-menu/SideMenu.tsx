@@ -10,6 +10,7 @@ import { useProfileDataStore } from '@/store/userProfileData'
 import { useInteractionStates } from '@/store/interactionStates'
 import { createList } from '@/server-actions/lists-actions'
 import CustomLists from './CustomLists'
+import { logout } from '../../../lib/auth-session'
 
 export function getRandomId() {
 	return Math.ceil(Math.random() * Math.pow(10, 7));
@@ -84,7 +85,10 @@ const SideMenu = () => {
 				<div className={styles.sideMenuHeader}>
 					<div className={styles.sideMenuHeader__row}>
 						<h2>{userData.login}</h2>
-						<LogOutIcon className={styles.logOutIcon} onClick={() => router.push('/')} />
+						<LogOutIcon className={styles.logOutIcon} onClick={async () => {
+							await logout();
+							router.push('/');
+						}} />
 
 					</div>
 

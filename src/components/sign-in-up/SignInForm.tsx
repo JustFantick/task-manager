@@ -6,6 +6,7 @@ import ForgotPassword from '../form/ForgotPassword'
 import SubmitButton from '../form/SubmitButton'
 import { signIn } from '@/server-actions/form-actions'
 import { useRouter } from 'next/navigation'
+import { login } from '../../../lib/auth-session'
 
 const SignInForm = () => {
 	const router = useRouter();
@@ -15,7 +16,7 @@ const SignInForm = () => {
 			const res = await signIn(formData);
 
 			if (res.success === true) {
-				//redirect to user page
+				await login(formData);
 				router.push(`./profiles/${res.userId}`);
 			}
 		}}
