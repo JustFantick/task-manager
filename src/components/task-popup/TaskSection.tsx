@@ -3,6 +3,7 @@ import React, { startTransition, useEffect, useOptimistic, useState } from 'reac
 import Status from '../task/Status'
 import styles from './taskPopup.module.scss'
 import PlusIcon from '../../../public/plus.svg'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 interface TaskSectionProps {
 	taskName: string,
@@ -40,6 +41,8 @@ const TaskSection = ({
 		})
 	}, [stepsList]);
 
+	const [animListRef] = useAutoAnimate();
+
 	return (
 		<div className={styles.taskSection}>
 			<div className={styles.taskSection__taskField}>
@@ -64,7 +67,7 @@ const TaskSection = ({
 
 			</div>
 
-			<ul className={styles.taskSection__stepsList}>
+			<ul className={styles.taskSection__stepsList} ref={animListRef}>
 				{optimisticStepsList.map(step => (
 					<li key={step.stepId} className={styles.steps}>
 						<Status isComplete={step.isCompleted} onClickHandler={async () => {
