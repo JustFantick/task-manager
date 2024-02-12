@@ -13,8 +13,7 @@ const TaskPopup = () => {
 				isTaskPopupOpen &&
 				<motion.div className={styles.taskPopup}
 					onClick={(e) => {
-						const el = e.target as HTMLElement;
-						if (!el.closest('#task-popup-content')) setIsTaskPopupOpen(false);
+						if (e.target === e.currentTarget) setIsTaskPopupOpen(false);
 					}}
 					key="task-popup"
 					initial={{ backgroundColor: 'rgba(0,0,0, 0)' }}
