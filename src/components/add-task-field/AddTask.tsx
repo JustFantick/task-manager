@@ -23,10 +23,12 @@ const AddTask = ({ addTaskFunc }: { addTaskFunc: (name: string) => void }) => {
 				<motion.div className={styles.plusContainer}
 					variants={{
 						onFocus: {
-							rotate: 45
+							rotate: 45,
+							opacity: 1,
 						},
 						onBlur: {
-							rotate: 0
+							rotate: 0,
+							opacity: 0.75,
 						}
 					}}
 					animate={isFocused ? 'onFocus' : 'onBlur'}

@@ -19,6 +19,7 @@ $paddingGap: adaptValue(10, 7);
 			flex: 1 1 auto;
 			background-color: transparent;
 			padding: $paddingVertical $paddingRight $paddingVertical $paddingGap;
+			font-size: adaptValue(18, 16);
 
 			border: none;
 			outline: none;
