@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './signInUp.module.scss'
 import Input from '../form/Input'
 import Checkbox from '../form/Checkbox'
@@ -9,6 +9,7 @@ import { login } from '../../../lib/auth-session'
 
 const SignUpForm = () => {
 	const router = useRouter();
+	const [reqMessage, setReqMessage] = useState<string>('');
 
 	return (
 		<form action={async (formData) => {
@@ -17,6 +18,8 @@ const SignUpForm = () => {
 			if (res.success === true) {
 				await login(formData);
 				router.push(`/profiles/${res.userId}`);
+			} else {
+				setReqMessage(res.message);
 			}
 		}} className={styles.formContainer}>
 			<Input
@@ -46,6 +49,8 @@ const SignUpForm = () => {
 			<Checkbox label='Remember me' name='remember' />
 
 			<SubmitButton title='Register' />
+
+			{reqMessage !== '' && <center style={{ color: 'purple' }}>{reqMessage}*</center>}
 
 		</form>
 	)
