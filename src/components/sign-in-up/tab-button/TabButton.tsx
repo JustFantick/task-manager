@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './TabButton.module.scss'
+import styles from './tabButton.module.scss'
 import { motion } from 'framer-motion'
 
 interface TabButtonProps {

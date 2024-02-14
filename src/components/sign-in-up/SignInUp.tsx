@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import styles from './SignInUp.module.scss'
+import styles from './signInUp.module.scss'
 import TabButton from './tab-button/TabButton'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'

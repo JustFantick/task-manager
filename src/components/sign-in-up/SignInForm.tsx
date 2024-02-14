@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './SignInUp.module.scss'
+import styles from './signInUp.module.scss'
 import Input from '../form/Input'
 import Checkbox from '../form/Checkbox'
 import ForgotPassword from '../form/ForgotPassword'
