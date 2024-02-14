@@ -14,8 +14,8 @@ const SignInUp = () => {
 	const slideRight = { opacity: 0, x: 100 }
 
 	const tabsArray = [
-		<SignInForm />,
-		<SignUpForm />
+		<SignInForm key={1} />,
+		<SignUpForm key={2} />
 	];
 
 	return (
