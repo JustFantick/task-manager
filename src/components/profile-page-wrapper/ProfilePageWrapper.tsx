@@ -21,7 +21,7 @@ const ProfilePageWrapper = () => {
 	useEffect(() => {
 		defineDeviceType();
 		window.addEventListener("resize", defineDeviceType);
-	});
+	}, []);
 
 	return (
 		<div style={{ display: 'flex' }}>
