@@ -1,16 +1,14 @@
 'use client'
 import React from 'react'
+import styles from './errorPage.module.scss'
 
 const ErrorPage = ({ error }: { error: Error }) => {
 	return (
-		<div style={{
-			height: '100%',
-			width: '100%',
-			display: 'flex',
-			justifyContent: 'center',
-			alignItems: 'center',
-		}}>
-			<h1>Something went wrong</h1>
+		<div className={styles.errorWrapper}>
+			<details className={styles.tabWrapper}>
+				<summary className={styles.tabWrapper__summary}>Something went wrong</summary>
+				<p className={styles.tabWrapper__message}>{error.message}</p>
+			</details>
 		</div>
 	)
 }

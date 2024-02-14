@@ -1,0 +1,23 @@
+.errorWrapper {
+	height: 100vh;
+	height: 100dvh;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tabWrapper {
+	max-width: 90vw;
+
+	text-shadow: 2px 2px 3px #000;
+
+	&__summary {
+		font-size: 1.75rem;
+		margin-bottom: 5px;
+	}
+
+	&__message {
+		font-size: 1rem;
+	}
+}
