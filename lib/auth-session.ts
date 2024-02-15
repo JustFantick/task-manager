@@ -25,8 +25,12 @@ export async function decrypt(input: string): Promise<any> {
 	return payload;
 }
 
-export async function login(formData: FormData) {
-	const user = { login: formData.get("login") };
+export async function login(userId: number, formData: FormData) {
+	const user = {
+		userId: userId,
+		login: formData.get("login"),
+		rememberUser: formData.get("remember"),
+	};
 
 	const expires = getExpiringTerm(new Date);
 	const session = await encrypt({ user, expires });

@@ -15,8 +15,8 @@ const SignUpForm = () => {
 		<form action={async (formData) => {
 			const res = await signUp(formData);
 
-			if (res.success === true) {
-				await login(formData);
+			if (res.success === true && res.userId) {
+				await login(res.userId, formData);
 				router.push(`/profiles/${res.userId}`);
 			} else {
 				setReqMessage(res.message);
