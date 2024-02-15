@@ -3,22 +3,15 @@ import prisma from '../../../../lib/prisma'
 import SideMenu from '@/components/side-menu/SideMenu';
 import StoreInitializer from '@/components/store-initializer/StoreInitializer';
 import ProfilePageWrapper from '@/components/profile-page-wrapper/ProfilePageWrapper';
-import { getSession } from '../../../../lib/auth-session';
-import { redirect } from 'next/navigation';
 
 interface ProfilePageProps {
 	params: { profileId: string },
 }
 
 const ProfilePage = async ({ params }: ProfilePageProps) => {
-	const session = await getSession();
 	const parsedProfileId = parseInt(params.profileId);
+	
 	const profileData = await prisma.users.findFirst({ where: { userId: parsedProfileId } });
-
-	if (session === null || session?.user.login !== profileData?.login) {
-		redirect("/");
-	}
-
 	const profileTasks = await prisma.tasks.findMany({ where: { userId: parsedProfileId } });
 	const profileLists = await prisma.lists.findMany({ where: { userId: parsedProfileId } });
 	const profileSteps = await prisma.steps.findMany({ where: { taskId: { in: profileTasks.map(task => task.taskId) } } });
