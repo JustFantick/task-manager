@@ -41,7 +41,7 @@ const TasksSection = () => {
 		<main className={styles.taskSection}>
 			<div className={styles.taskSection__head}>
 				{
-					typeof activeList === 'number' ?
+					typeof activeList === 'number' ? (
 						<div className={styles.editableListName}>
 							<EditIcon className={styles.editableListName__icon} />
 							<div contentEditable
@@ -70,8 +70,9 @@ const TasksSection = () => {
 							>
 								{chosenListName.charAt(0).toUpperCase() + chosenListName.slice(1)}
 							</div>
-						</div> :
-						<MainTitle text={chosenListName} />
+						</div>
+
+					) : <MainTitle text={chosenListName} />
 				}
 
 				{isMobile &&
