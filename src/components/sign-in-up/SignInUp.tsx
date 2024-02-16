@@ -4,10 +4,10 @@ import styles from './signInUp.module.scss'
 import TabButton from './tab-button/TabButton'
 import { AnimatePresence, MotionProps } from 'framer-motion'
 import HorizontalLine from '../horizontal-line/HorizontalLine'
-import { MotionCustomForm } from './CustomForm'
+import { MotionCustomForm, FormType } from './CustomForm'
 
 const SignInUp = () => {
-	const [activeTabIndex, setActiveTabIndex] = useState(0);
+	const [activeTabType, setActiveTabType] = useState<FormType>('login');
 
 	function animOptions(direction: 'left' | 'right'): MotionProps {
 		return {
@@ -22,14 +22,14 @@ const SignInUp = () => {
 		<div className={styles.signInUpContainer}>
 			<div className={styles.tabsContainer}>
 				<TabButton
-					onClickHandler={() => setActiveTabIndex(0)}
-					isActive={activeTabIndex === 0 ? true : false}
+					onClickHandler={() => setActiveTabType('login')}
+					isActive={activeTabType === 'login' ? true : false}
 					text="Login"
 				/>
 
 				<TabButton
-					onClickHandler={() => setActiveTabIndex(1)}
-					isActive={activeTabIndex === 1 ? true : false}
+					onClickHandler={() => setActiveTabType('register')}
+					isActive={activeTabType === 'register' ? true : false}
 					text="Register"
 				/>
 
@@ -40,19 +40,11 @@ const SignInUp = () => {
 			<div>
 				<AnimatePresence mode='wait'>
 					{
-						activeTabIndex === 0 ? (
-							<MotionCustomForm
-								type='login'
-								key='login-form'
-								{...animOptions('left')}
-							/>
-						) : (
-							<MotionCustomForm
-								type='register'
-								key='register-form'
-								{...animOptions('right')}
-							/>
-						)
+						<MotionCustomForm
+							type={activeTabType}
+							key={`${activeTabType}-form`}
+							{...animOptions(activeTabType === 'login' ? 'left' : 'right')}
+						/>
 					}
 
 				</AnimatePresence>
