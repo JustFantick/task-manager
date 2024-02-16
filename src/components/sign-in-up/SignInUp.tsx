@@ -2,10 +2,9 @@
 import React, { useState } from 'react'
 import styles from './signInUp.module.scss'
 import TabButton from './tab-button/TabButton'
-import SignInForm from './SignInForm'
-import SignUpForm from './SignUpForm'
 import { AnimatePresence, motion } from 'framer-motion'
 import HorizontalLine from '../horizontal-line/HorizontalLine'
+import CustomForm from './CustomForm'
 
 const SignInUp = () => {
 	const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -15,8 +14,8 @@ const SignInUp = () => {
 	const slideRight = { opacity: 0, x: 100 }
 
 	const tabsArray = [
-		<SignInForm key={1} />,
-		<SignUpForm key={2} />
+		<CustomForm type='login' key='login-form' />,
+		<CustomForm type='register' key='register-form' />,
 	];
 
 	return (
@@ -36,7 +35,7 @@ const SignInUp = () => {
 
 			</div>
 
-			<HorizontalLine/>
+			<HorizontalLine />
 
 			<div>
 				<AnimatePresence mode='wait'>
@@ -52,7 +51,6 @@ const SignInUp = () => {
 					</motion.div>
 
 				</AnimatePresence>
-
 			</div>
 
 		</div>

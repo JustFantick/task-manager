@@ -2,23 +2,26 @@ import React, { useState } from 'react'
 import styles from './signInUp.module.scss'
 import Input from '../form/Input'
 import Checkbox from '../form/Checkbox'
-import ForgotPassword from '../form/ForgotPassword'
 import SubmitButton from '../form/SubmitButton'
-import { signIn } from '@/server-actions/form-actions'
+import { signUp, signIn } from '@/server-actions/form-actions'
 import { useRouter } from 'next/navigation'
 import { login } from '../../../lib/auth-session'
+import ForgotPassword from '../form/ForgotPassword'
 
-const SignInForm = () => {
+type FormType = 'login' | 'register';
+
+const CustomForm = ({ type }: { type: FormType }) => {
 	const router = useRouter();
 	const [reqMessage, setReqMessage] = useState<string>('');
 
 	return (
 		<form action={async (formData) => {
-			const res = await signIn(formData);
+			const serverFn = type === 'login' ? signIn : signUp;
+			const res = await serverFn(formData);
 
 			if (res.success === true && res.userId) {
 				await login(res.userId, formData);
-				router.push(`./profiles/${res.userId}`);
+				router.push(`/profiles/${res.userId}`);
 			} else {
 				setReqMessage(res.message);
 			}
@@ -33,6 +36,16 @@ const SignInForm = () => {
 				title='Must contain at least 4 letters or numbers'
 			/>
 
+			{type === 'register' && (
+				<Input
+					type='email'
+					label='Email'
+					name='email'
+					pattern='[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$'
+					title='Must be a valid email address'
+				/>
+			)}
+
 			<Input
 				type='password'
 				label='Password'
@@ -43,9 +56,11 @@ const SignInForm = () => {
 
 			<Checkbox label='Remember me' name='remember' />
 
-			<ForgotPassword />
+			{type === 'login' && (
+				<ForgotPassword />
+			)}
 
-			<SubmitButton title='Authorize' />
+			<SubmitButton title={type === 'login' ? 'Sign in' : 'Register'} />
 
 			{reqMessage !== '' && <center style={{ color: 'purple' }}>{reqMessage}*</center>}
 
@@ -53,4 +68,4 @@ const SignInForm = () => {
 	)
 }
 
-export default SignInForm
+export default CustomForm
