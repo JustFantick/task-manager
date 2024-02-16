@@ -1,5 +1,5 @@
 'use client'
-import React, { startTransition, useEffect, useOptimistic, useState } from 'react'
+import React from 'react'
 import HorizontalLine from '../horizontal-line/HorizontalLine'
 import TasksListCard from '../tasks-list-card/TasksListCard'
 import styles from './sideMenu.module.scss'
@@ -34,7 +34,7 @@ const SideMenu = () => {
 	const router = useRouter();
 
 	//userLists means custom Lists created by user that could be managed and deleted
-	const { userData, userLists, setUserLists, userTasks, setFilteredTasks } = useProfileDataStore();
+	const { userData, userLists, setUserLists, userTasks } = useProfileDataStore();
 
 	const { setChosenListName, activeList, setActiveList } = useInteractionStates();
 
@@ -42,24 +42,20 @@ const SideMenu = () => {
 		setActiveList(listName);
 
 		if (listName === 'Todays') {
-			setFilteredTasks(userTasks.filter(task => task.executeDate?.getDate() === new Date().getDate()));
-
+			//Instead of displaying "Todays" text, show current date
 			setChosenListName(new Intl.DateTimeFormat('en-US', {
 				month: 'long',
 				day: 'numeric',
 			}).format(new Date()));
 		} else if (listName === 'Planned') {
-			setFilteredTasks(userTasks.filter(task => task.executeDate !== null));
 			setChosenListName('Planned');
 		} else if (listName === 'All tasks') {
-			setFilteredTasks(userTasks);
 			setChosenListName('All tasks');
 		}
 	}
 
 	function customListClickhandler(id: number) {
 		setActiveList(id);
-		setFilteredTasks(userTasks.filter(task => task.listId === id));
 
 		const foundListName = userLists.find(list => list.listId === id)?.name;
 		setChosenListName(foundListName === undefined ? 'List not found' : foundListName);
@@ -92,7 +88,7 @@ const SideMenu = () => {
 
 					</div>
 
-					<p>{userData.email}</p>
+					<a href={`mailto:${userData.email}`}>{userData.email}</a>
 
 				</div>
 
