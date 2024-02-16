@@ -23,6 +23,7 @@ const TasksList = ({ tasksList, setTasksList, activeList }: TasksListProps) => {
 			.sort((a, b) => Number(a.isCompleted) - Number(b.isCompleted))
 	);
 
+	//Update tasksList when user create new task
 	useEffect(() => {
 		startTransition(() => setOptimisticTasks(tasksList));
 	}, [tasksList]);
@@ -88,12 +89,24 @@ const TasksList = ({ tasksList, setTasksList, activeList }: TasksListProps) => {
 
 	const [animListRef] = useAutoAnimate();
 
+	function filterTasks(arr: Task[]): Task[] {
+		if (typeof activeList === 'number') {
+			return arr.filter(task => task.listId === activeList);
+		} else if (activeList === 'Planned') {
+			return arr.filter(task => task.executeDate !== null);
+		} else if (activeList === 'Todays') {
+			return arr.filter(task => task.executeDate?.getDate() === new Date().getDate());
+		} else {
+			return arr;
+		}
+	}
+
 	return (
 		<ul className={styles.taskSection__tasksList} ref={animListRef}>
 			{
-				typeof activeList === 'number' ?
-					optimisticTasks.filter(task => task.listId === activeList).map(task => (
-						<TaskCart key={task.taskId}
+				filterTasks(optimisticTasks).map(task => (
+					<li key={task.taskId}>
+						<TaskCart
 							title={task.name}
 							isComplete={task.isCompleted}
 							isPrioritize={task.priority}
@@ -102,42 +115,8 @@ const TasksList = ({ tasksList, setTasksList, activeList }: TasksListProps) => {
 							completeChangeHandler={() => completeClickHandler(task.taskId)}
 							priorityChangeHandler={() => priorityClickHandler(task.taskId)}
 						/>
-					)) :
-					activeList === 'Planned' ?
-						optimisticTasks.filter(task => task.executeDate !== null).map(task => (
-							<TaskCart key={task.taskId}
-								title={task.name}
-								isComplete={task.isCompleted}
-								isPrioritize={task.priority}
-
-								taskClickHandler={() => taskClickHandler(task.taskId)}
-								completeChangeHandler={() => completeClickHandler(task.taskId)}
-								priorityChangeHandler={() => priorityClickHandler(task.taskId)}
-							/>
-						)) :
-						activeList === 'Todays' ?
-							optimisticTasks.filter(task => task.executeDate?.getDate() === new Date().getDate()).map(task => (
-								<TaskCart key={task.taskId}
-									title={task.name}
-									isComplete={task.isCompleted}
-									isPrioritize={task.priority}
-
-									taskClickHandler={() => taskClickHandler(task.taskId)}
-									completeChangeHandler={() => completeClickHandler(task.taskId)}
-									priorityChangeHandler={() => priorityClickHandler(task.taskId)}
-								/>
-							)) :
-							optimisticTasks.map(task => (
-								<TaskCart key={task.taskId}
-									title={task.name}
-									isComplete={task.isCompleted}
-									isPrioritize={task.priority}
-
-									taskClickHandler={() => taskClickHandler(task.taskId)}
-									completeChangeHandler={() => completeClickHandler(task.taskId)}
-									priorityChangeHandler={() => priorityClickHandler(task.taskId)}
-								/>
-							))
+					</li>
+				))
 			}
 
 		</ul>
