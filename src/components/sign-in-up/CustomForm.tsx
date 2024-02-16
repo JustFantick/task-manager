@@ -11,7 +11,7 @@ import { motion } from 'framer-motion'
 
 export type FormType = 'login' | 'register';
 
-const CustomForm = forwardRef(({ type }: { type: FormType }, ref: Ref<HTMLFormElement>) => {
+const CustomForm = forwardRef(function CustomForm({ type }: { type: FormType }, ref: Ref<HTMLFormElement>) {
 	const router = useRouter();
 	const [reqMessage, setReqMessage] = useState<string>('');
 
