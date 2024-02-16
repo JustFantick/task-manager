@@ -5,6 +5,7 @@ import TabButton from './tab-button/TabButton'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import { AnimatePresence, motion } from 'framer-motion'
+import HorizontalLine from '../horizontal-line/HorizontalLine'
 
 const SignInUp = () => {
 	const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -35,7 +36,7 @@ const SignInUp = () => {
 
 			</div>
 
-			<div className={styles.horizontalLine}></div>
+			<HorizontalLine/>
 
 			<div>
 				<AnimatePresence mode='wait'>
