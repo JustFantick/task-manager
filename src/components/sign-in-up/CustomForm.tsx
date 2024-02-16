@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, forwardRef, Ref } from 'react'
 import styles from './signInUp.module.scss'
 import Input from '../form/Input'
 import Checkbox from '../form/Checkbox'
@@ -7,10 +7,11 @@ import { signUp, signIn } from '@/server-actions/form-actions'
 import { useRouter } from 'next/navigation'
 import { login } from '../../../lib/auth-session'
 import ForgotPassword from '../form/ForgotPassword'
+import { motion } from 'framer-motion'
 
-type FormType = 'login' | 'register';
+export type FormType = 'login' | 'register';
 
-const CustomForm = ({ type }: { type: FormType }) => {
+const CustomForm = forwardRef(({ type }: { type: FormType }, ref: Ref<HTMLFormElement>) => {
 	const router = useRouter();
 	const [reqMessage, setReqMessage] = useState<string>('');
 
@@ -27,6 +28,7 @@ const CustomForm = ({ type }: { type: FormType }) => {
 			}
 		}}
 			className={styles.formContainer}
+			ref={ref}
 		>
 			<Input
 				type='text'
@@ -66,6 +68,7 @@ const CustomForm = ({ type }: { type: FormType }) => {
 
 		</form>
 	)
-}
+});
 
-export default CustomForm
+export default CustomForm;
+export const MotionCustomForm = motion(CustomForm, { forwardMotionProps: true });
