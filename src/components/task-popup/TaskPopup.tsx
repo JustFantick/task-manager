@@ -131,12 +131,12 @@ const TaskPopupContent = () => {
 	}
 
 	async function deleteTaskHandler() {
+		setIsTaskPopupOpen(false);
 		const response = await deleteTask(taskPopupId);
 
 		if (response.success) {
 			setUserTasks(userTasks.filter(task => task.taskId !== taskPopupId));
 			setTaskPopupId(0);
-			setIsTaskPopupOpen(false);
 		}
 	}
 
