@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Ref, forwardRef } from 'react'
 import styles from './form.module.scss'
 
 interface InputProps {
@@ -11,16 +11,16 @@ interface InputProps {
 	placeholder?: string,
 }
 
-const Input = ({
+const Input = forwardRef(function Input({
 	label = '', type, name, pattern, title = '', isRequired = true, placeholder = ''
-}: InputProps) => {
+}: InputProps, ref: Ref<HTMLInputElement>) {
 	return (
 		<label className={styles.inputWrapper}>
 			<div className={styles.inputWrapper__label}>
 				{label}
 			</div>
 
-			<input className={styles.inputWrapper__input}
+			<input className={styles.inputWrapper__input} ref={ref}
 				type={type}
 				name={name}
 				pattern={pattern}
@@ -31,6 +31,6 @@ const Input = ({
 
 		</label>
 	)
-}
+});
 
 export default Input
