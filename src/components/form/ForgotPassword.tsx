@@ -1,13 +1,11 @@
 import React from 'react'
 import styles from './form.module.scss'
 
-const ForgotPassword = () => {
-	function onClickHandler(event: React.MouseEvent) {
-		event.preventDefault();
-		console.log('clicked');
-	}
+const ForgotPassword = ({ clickHandler }: { clickHandler: () => void }) => {
 	return (
-		<a className={styles.forgotPassword} href="#" onClick={(e) => onClickHandler(e)}>Forgot password</a>
+		<button type='button' className={styles.forgotPassword} onClick={() => clickHandler()}>
+			Forgot password
+		</button>
 	)
 }
 

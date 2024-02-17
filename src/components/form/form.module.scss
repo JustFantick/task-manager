@@ -75,4 +75,10 @@ $labelTextSize: adaptValue(20, 16);
 	text-decoration: underline;
 	color: $primaryTextColor;
 	font-size: $labelTextSize;
+
+	background-color: transparent;
+	outline: none;
+	border: none;
+	display: block;
+	text-align: left;
 }
