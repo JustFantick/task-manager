@@ -1,0 +1,32 @@
+.popupContent {
+	border-radius: $borderRadius;
+	padding: 15px 20px;
+	background-color: $primaryBgColorHover;
+	max-width: 300px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	&__buttons {
+		align-self: flex-end;
+		display: flex;
+		gap: 15px;
+	}
+}
+
+@mixin btnStyles {
+	padding: 5px 10px;
+	background-color: transparent;
+	border: none;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.cancelBtn {
+	@include btnStyles();
+}
+
+.actionBtn {
+	@include btnStyles();
+	color: yellow;
+}
