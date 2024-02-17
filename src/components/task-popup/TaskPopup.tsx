@@ -26,7 +26,7 @@ const TaskPopupContent = () => {
 		if (response.success) {
 			setUserTasks(userTasks.map(task => {
 				if (task.taskId === taskPopupId) {
-					return { ...task, name: newName };
+					return { ...task, name: newName, editTime: new Date() };
 				} else return task;
 			}));
 		}
@@ -52,11 +52,12 @@ const TaskPopupContent = () => {
 				if (task.taskId === taskPopupId) {
 					return {
 						...task,
+						editTime: new Date(),
 						steps: task.steps.map(step => {
 							if (step.stepId === stepId) {
 								return { ...step, stepName: newName };
 							} else return step;
-						})
+						}),
 					};
 				} else return task;
 			}));
@@ -88,7 +89,7 @@ const TaskPopupContent = () => {
 		if (response.success && response.createdStep) {
 			setUserTasks(userTasks.map(task => {
 				if (task.taskId === taskPopupId) {
-					return { ...task, steps: [...task.steps, response.createdStep] };
+					return { ...task, steps: [...task.steps, response.createdStep], editTime: new Date() };
 				} else return task;
 			}))
 		}
@@ -100,7 +101,7 @@ const TaskPopupContent = () => {
 		if (response.success) {
 			setUserTasks(userTasks.map(task => {
 				if (task.taskId === taskPopupId) {
-					return { ...task, note: noteText };
+					return { ...task, note: noteText, editTime: new Date() };
 				} else return task;
 			}))
 		}
@@ -112,7 +113,7 @@ const TaskPopupContent = () => {
 		if (response.success) {
 			setUserTasks(userTasks.map(task => {
 				if (task.taskId === taskPopupId) {
-					return { ...task, executeDate: date };
+					return { ...task, executeDate: date, editTime: new Date() };
 				} else return task;
 			}));
 		}
@@ -124,7 +125,7 @@ const TaskPopupContent = () => {
 		if (response.success) {
 			setUserTasks(userTasks.map(task => {
 				if (task.taskId === taskPopupId) {
-					return { ...task, steps: task.steps.filter(step => step.stepId !== stepId) };
+					return { ...task, steps: task.steps.filter(step => step.stepId !== stepId), editTime: new Date() };
 				} else return task;
 			}));
 		}
