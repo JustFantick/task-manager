@@ -176,7 +176,7 @@ const TaskPopupContent = () => {
 					<div className={styles.taskPopupContent__footer}>
 						<ArrowLeftIcon className={styles.arrowLeftIcon} onClick={() => setIsTaskPopupOpen(false)} />
 
-						<div>Last edit: <time dateTime=''>
+						<div className={styles.editTime}>Last edit: <time dateTime=''>
 							{new Intl.DateTimeFormat('en-US', {
 								hour: '2-digit',
 								minute: '2-digit',

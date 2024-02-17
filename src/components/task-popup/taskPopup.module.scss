@@ -11,7 +11,7 @@
 }
 
 .taskPopupContent {
-	padding: adaptValue(40, 20) adaptValue(20, 10) 10px adaptValue(20, 10);
+	padding: adaptValue(40, 25) adaptValue(20, 10) 10px adaptValue(20, 10);
 
 	border-top-left-radius: $borderRadius;
 	border-bottom-left-radius: $borderRadius;
@@ -35,22 +35,24 @@
 		flex: 1 1 auto;
 		display: flex;
 		flex-direction: column;
-		gap: adaptValue(25, 15);
+		gap: adaptValue(25, 18);
 	}
 
 	&__footer {
-		padding: adaptValue(20, 15) 10px;
-
+		padding-top: calc(adaptValue(20, 10)*2);
+		padding-bottom: adaptValue(20, 10);
+		padding-right: 10px;
+		padding-left: 10px;
 
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-around;
 		align-items: center;
 		gap: 5px;
-
-		p {
-			font-size: 18px;
-		}
 	}
+}
+
+.editTime {
+	font-size: 18px;
 }
 
 .arrowLeftIcon {
