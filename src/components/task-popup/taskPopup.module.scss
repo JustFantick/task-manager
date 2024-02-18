@@ -1,15 +1,3 @@
-.taskPopup {
-	position: absolute;
-	top: 0;
-	left: 0;
-
-	height: 100vh;
-	height: 100dvh;
-	width: 100%;
-
-	background-color: rgba(0, 0, 0, 0.5);
-}
-
 .taskPopupContent {
 	padding: adaptValue(40, 25) adaptValue(20, 10) 10px adaptValue(20, 10);
 
@@ -30,16 +18,26 @@
 
 	display: flex;
 	flex-direction: column;
+	gap: 15px;
 
 	&__dataSections {
 		flex: 1 1 auto;
+
 		display: flex;
 		flex-direction: column;
+		overflow-y: auto;
+		scroll-snap-type: y proximity;
+
+		&>* {
+			scroll-snap-align: start;
+			flex: 0 0 auto;
+		}
+
 		gap: adaptValue(25, 18);
 	}
 
 	&__footer {
-		padding-top: calc(adaptValue(20, 10)*2);
+		padding-top: calc(adaptValue(20, 10)*2 - 15px);
 		padding-bottom: adaptValue(20, 10);
 		padding-right: 10px;
 		padding-left: 10px;
