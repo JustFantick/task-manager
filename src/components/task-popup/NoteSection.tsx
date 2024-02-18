@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef } from 'react'
+import React, { ChangeEvent, useEffect, useRef } from 'react'
 import styles from './taskPopup.module.scss'
 
 interface NoteSectionProps {
@@ -9,7 +9,11 @@ interface NoteSectionProps {
 const NoteSection = ({ note, setNote }: NoteSectionProps) => {
 	const textareaRef = useRef<null | HTMLTextAreaElement>(null);
 
-	function onChangeHandler() {
+	useEffect(() => {
+		correctHeight();
+	}, []);
+
+	function correctHeight() {
 		if (textareaRef.current) {
 			if (textareaRef.current?.scrollHeight >= 170) return;
 			textareaRef.current.style.height = `auto`;
@@ -23,7 +27,7 @@ const NoteSection = ({ note, setNote }: NoteSectionProps) => {
 			ref={textareaRef}
 			placeholder='Note text'
 			defaultValue={note}
-			onChange={onChangeHandler}
+			onChange={correctHeight}
 			onKeyDown={(e) => {
 				if (e.code === "Enter") e.currentTarget.blur();
 			}}
