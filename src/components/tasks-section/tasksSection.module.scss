@@ -32,6 +32,12 @@
 		scrollbar-gutter: stable;
 		max-height: 100%;
 		overflow-y: auto;
+		scroll-snap-type: y proximity;
+
+		li {
+			scroll-snap-align: start;
+		}
+
 		flex: 1 1 auto;
 
 		display: flex;
