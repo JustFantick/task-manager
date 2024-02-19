@@ -16,7 +16,7 @@ const DeleteTaskPopup = ({ taskName, isOpen, setIsOpen, deleteTask }: DeleteTask
       closePopup={() => setIsOpen(false)}
       contentAppearance='middleDialogWindow'
     >
-      <div className={styles.deleteTaskPopup__body}>
+      <div className={styles.deleteTaskPopup}>
         <h4 className={styles.title}>Delete task</h4>
         <p className={styles.detailsInfo}>Are you sure you want to delete this task?</p>
         <div className={styles.deleteTaskPopup__buttons}>
